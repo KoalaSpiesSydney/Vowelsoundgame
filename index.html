@@ -61,6 +61,20 @@ main{
   padding:1.5rem 1rem 2.5rem;
   text-align:center;
 }
+
+/* === Lesson Link === */
+.lesson-link{
+  margin:1rem 0;
+  font-size:1.1rem;
+}
+.lesson-link a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:600;
+}
+.lesson-link a:hover{text-decoration:underline;}
+
+/* === Instructions === */
 .instructions{
   max-width:600px;
   background:#fff;
@@ -148,14 +162,14 @@ main{
   display:none;
 }
 
-/* === Feedback & Buttons === */
+/* === Feedback === */
 #feedback{
   font-weight:700;
   height:1.6rem;
   margin:.8rem 0 1.2rem;
 }
 
-/* Control Buttons (Play Again, etc.) */
+/* === Controls === */
 #controls{
   display:flex;
   flex-wrap:wrap;
@@ -188,8 +202,11 @@ button:active,.btn:active{transform:translateY(0);}
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   gap:1rem;
   width:min(900px,95%);
+  margin:0 auto;
+  justify-items:center;
 }
 .column{
+  width:100%;
   background:#fff;
   border:2px solid var(--accent);
   border-radius:var(--radius);
@@ -228,22 +245,27 @@ footer{
 <body>
 <header>
   MODERN ENGLISH AUSTRALIA
-  <span>One Letter- Four Sounds</span>
+  <span>"U" One Letter - Four Sounds</span>
 </header>
 
 <main>
-    <p> Are you having problems differentiating the four sounds of "U" in English? <b>
+  <p>Are you having problems differentiating the four sounds of "U" in English?
+    <b></b>If so, click on the buttons below to hear the sound and see it spoken. Then play this game.
+  </p>
 
-    </b>If so click on the buttons below to hear the sound and see it spoken. Then play this game.</p>
+  <p class="lesson-link">
+    📘 <a href="u3.html" target="_blank">Click here for the full lesson and pronunciation hints</a>
+  </p>
+
   <div class="instructions">
     <h2>How to Play</h2>
-    
-    <p>🎧 <b>Click </b> on the sound buttons to hear and see the </p>
-    <p> ▶ <b>Start</b> to hear a word and see it appear in the centre.</p>
+    <p>🎧 <b>Click</b> on the sound buttons to hear and see the</p>
+    <p>▶ <b>Start</b> to hear a word and see it appear in the centre.</p>
     <p>👉 <b>Drag</b> the orange word bubble to the correct sound circle.</p>
     <p>💬 <b>Press any sound circle</b> to see a short pronunciation hint.</p>
   </div>
 
+  <!-- === Game Zone === -->
   <div id="game-zone">
     <div id="central">▶ Start</div>
 
@@ -267,13 +289,14 @@ footer{
 
   <div id="feedback"></div>
 
-  <p> Review the words in the column you below and then go onto further practice or play again</p>
+  <p>Review the words in the columns below, then go to further practice or play again.</p>
 
-  <!-- New Play Again & Navigation Buttons -->
+  <!-- === Controls === -->
   <div id="controls">
     <button id="reset">🔁 Play Again</button>
   </div>
 
+  <!-- === Columns === -->
   <div id="columns">
     <div class="column" id="col-ju"><h3>/juː/ – “you”</h3><div class="list"></div></div>
     <div class="column" id="col-oo"><h3>/uː/ – “oo”</h3><div class="list"></div></div>
@@ -281,9 +304,10 @@ footer{
     <div class="column" id="col-er"><h3>/ɜː/ – “er”</h3><div class="list"></div></div>
   </div>
 
-   <div id="controls">
-     <a href="index.html" class="btn">🏠 Home</a>
-    <a href="furtherpractice.html" class="btn">🗂 Further Practice</a>
+  <!-- === Navigation === -->
+  <div id="controls">
+    <a href="index.html" class="btn">🏠 Home</a>
+    <a href="U2.html" class="btn">🗂 Further Practice</a>
   </div>
 </main>
 
@@ -315,7 +339,7 @@ const words=[
 ];
 let remaining=[...words];
 let current=null;
-let selected=false; // for tap system
+let selected=false;
 
 const central=document.getElementById("central");
 const feedback=document.getElementById("feedback");
@@ -331,10 +355,10 @@ function playWordAudio(word){
   });
 }
 
-/* === Play button-specific feedback === */
+/* === Play button feedback === */
 function playButtonSound(sound, result){
-  const file = `audio/${result}-${sound}.mp3`;
-  const a = new Audio(file);
+  const file=`audio/${result}-${sound}.mp3`;
+  const a=new Audio(file);
   a.play().catch(()=>{});
 }
 
@@ -350,7 +374,7 @@ central.addEventListener("click",()=>{
   central.textContent=current.text;
   playWordAudio(current);
   feedback.textContent="";
-  selected=true; // ready for tap selection
+  selected=true;
   soundBtns.forEach(btn=>{
     btn.classList.add("pulsing");
     setTimeout(()=>btn.classList.remove("pulsing"),2000);
@@ -371,24 +395,19 @@ soundBtns.forEach(btn=>{
   const vid=btn.querySelector(".hint-video");
   const label=btn.querySelector("span");
 
-  // drag-drop handling
   btn.addEventListener("dragover",e=>e.preventDefault());
   btn.addEventListener("drop",e=>{
     e.preventDefault();
     if(!current)return;
     const sound=btn.dataset.sound;
-    handleAnswer(sound, btn);
+    handleAnswer(sound,btn);
   });
 
-  // tap-to-select system
   btn.addEventListener("click",()=>{
-    // If there's a current word waiting for answer:
-    if(selected && current){
-      handleAnswer(btn.dataset.sound, btn);
+    if(selected&&current){
+      handleAnswer(btn.dataset.sound,btn);
       return;
     }
-
-    // Otherwise play hint video
     if(!current){
       if(vid.style.display==="block")return;
       label.style.display="none";
@@ -404,8 +423,8 @@ soundBtns.forEach(btn=>{
   });
 });
 
-/* === Handle answer for both tap and drag === */
-function handleAnswer(sound, btn){
+/* === Handle Answer === */
+function handleAnswer(sound,btn){
   if(sound===current.sound){
     btn.classList.add("correct");
     feedback.textContent="✅ Correct!";
