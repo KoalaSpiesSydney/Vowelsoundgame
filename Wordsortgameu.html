@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sound Sorting – The Four “U” Sounds | Modern English Australia</title>
+
+<style>
+:root {
+  --bg:#f2f5f6;
+  --card:#1e1f21;
+  --accent:#009688;
+  --accent-light:#33bba6;
+  --ink:#1c1e20;
+  --ink-light:#f5f5f5;
+  --success:#20c997;
+  --error:#e74c3c;
+  --shadow:0 6px 24px rgba(0,0,0,.25);
+  --radius:14px;
+}
+
+/* === Base === */
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+/* === Header === */
+header{
+  background:linear-gradient(to right,#1e1f21,#2e3236);
+  color:var(--ink-light);
+  text-align:center;
+  padding:1.3rem 0;
+  font-size:1.6rem;
+  font-weight:700;
+  letter-spacing:2px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+header span{
+  display:block;
+  font-weight:400;
+  font-size:1rem;
+  letter-spacing:2px;
+  color:var(--accent-light);
+  margin-top:.3rem;
+}
+
+/* === Main Layout === */
+main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:1.5rem 1rem 2.5rem;
+  text-align:center;
+}
+.instructions{
+  max-width:600px;
+  background:#fff;
+  border-radius:var(--radius);
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  padding:1rem 1.4rem;
+  margin-bottom:1rem;
+  line-height:1.6;
+}
+.instructions h2{
+  color:var(--accent);
+  margin-top:0;
+}
+
+/* === Central Game Zone === */
+#game-zone{
+  position:relative;
+  width:min(600px,90%);
+  aspect-ratio:1/1;
+  margin:1.5rem auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#central{
+  width:150px;height:150px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-light));
+  color:#fff;
+  font-size:1.2rem;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  user-select:none;
+  box-shadow:var(--shadow);
+  transition:transform .25s,box-shadow .25s;
+}
+#central:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(0,150,136,0.6);}
+#central.dragging{opacity:.85;transform:scale(1.1);}
+
+/* === Sound Buttons === */
+.sound-btn{
+  position:absolute;
+  width:150px;height:150px;
+  border-radius:50%;
+  background:#fff;
+  border:4px solid var(--accent);
+  color:var(--accent);
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  transition:transform .25s,background .25s;
+  overflow:hidden;
+}
+.sound-btn:hover{transform:scale(1.07);}
+.sound-btn.correct{background:var(--success);color:#fff;animation:glow 1s ease;}
+.sound-btn.wrong{background:var(--error);color:#fff;}
+@keyframes glow{
+  0%{box-shadow:0 0 0px var(--success);}
+  50%{box-shadow:0 0 24px var(--success);}
+  100%{box-shadow:0 0 0px var(--success);}
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0px rgba(0,150,136,0);}
+  50%{box-shadow:0 0 25px rgba(0,150,136,0.6);}
+  100%{box-shadow:0 0 0px rgba(0,150,136,0);}
+}
+.sound-btn.pulsing{animation:pulse 1.8s ease-in-out;}
+#btn-ju{top:0;left:50%;transform:translate(-50%,-25%);}
+#btn-oo{right:0;top:50%;transform:translate(25%,-50%);}
+#btn-uh{bottom:0;left:50%;transform:translate(-50%,25%);}
+#btn-er{left:0;top:50%;transform:translate(-25%,-50%);}
+
+/* === Hint Videos === */
+.hint-video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+  display:none;
+}
+
+/* === Feedback & Buttons === */
+#feedback{
+  font-weight:700;
+  height:1.6rem;
+  margin:.8rem 0 1.2rem;
+}
+
+/* Control Buttons (Play Again, etc.) */
+#controls{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:1rem;
+  margin:1.2rem 0 2rem;
+}
+button,.btn{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  padding:.7rem 1.4rem;
+  border-radius:30px;
+  font-size:1rem;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 3px 8px rgba(0,0,0,0.2);
+  transition:background .25s,transform .25s;
+  text-decoration:none;
+}
+button:hover,.btn:hover{
+  background:var(--accent-light);
+  transform:translateY(-2px);
+}
+button:active,.btn:active{transform:translateY(0);}
+
+/* === Columns === */
+#columns{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;
+  width:min(900px,95%);
+}
+.column{
+  background:#fff;
+  border:2px solid var(--accent);
+  border-radius:var(--radius);
+  padding:1rem;
+  text-align:center;
+  box-shadow:0 0 8px rgba(0,0,0,0.15);
+}
+.column h3{margin-top:0;color:var(--accent);}
+.word{
+  margin:.3rem auto;
+  padding:.25rem .7rem;
+  background:var(--accent);
+  color:#fff;
+  border-radius:6px;
+  display:inline-block;
+  font-weight:600;
+}
+
+/* === Footer === */
+footer{
+  text-align:center;
+  background:var(--card);
+  color:var(--ink-light);
+  font-size:.9rem;
+  padding:1rem;
+}
+
+/* === Responsive === */
+@media (min-width:800px){
+  #central{width:180px;height:180px;font-size:1.25rem;}
+  .sound-btn{width:180px;height:180px;font-size:1.25rem;}
+}
+</style>
+</head>
+
+<body>
+<header>
+  MODERN ENGLISH AUSTRALIA
+  <span>One Letter- Four Sounds</span>
+</header>
+
+<main>
+    <p> Are you having problems differentiating the four sounds of "U" in English? <b>
+
+    </b>If so click on the buttons below to hear the sound and see it spoken. Then play this game.</p>
+  <div class="instructions">
+    <h2>How to Play</h2>
+    
+    <p>🎧 <b>Click </b> on the sound buttons to hear and see the </p>
+    <p> ▶ <b>Start</b> to hear a word and see it appear in the centre.</p>
+    <p>👉 <b>Drag</b> the orange word bubble to the correct sound circle.</p>
+    <p>💬 <b>Press any sound circle</b> to see a short pronunciation hint.</p>
+  </div>
+
+  <div id="game-zone">
+    <div id="central">▶ Start</div>
+
+    <div id="btn-ju" class="sound-btn" data-sound="ju">
+      <span>/juː/</span>
+      <video id="hint-ju" class="hint-video" src="yousound.mp4" playsinline muted></video>
+    </div>
+    <div id="btn-oo" class="sound-btn" data-sound="oo">
+      <span>/uː/</span>
+      <video id="hint-oo" class="hint-video" src="oops.mp4" playsinline muted></video>
+    </div>
+    <div id="btn-uh" class="sound-btn" data-sound="uh">
+      <span>/ʌ/</span>
+      <video id="hint-uh" class="hint-video" src="ahsound.mp4" playsinline muted></video>
+    </div>
+    <div id="btn-er" class="sound-btn" data-sound="er">
+      <span>/ɜː/</span>
+      <video id="hint-er" class="hint-video" src="uhsound.mp4" playsinline muted></video>
+    </div>
+  </div>
+
+  <div id="feedback"></div>
+
+  <p> Review the words in the column you below and then go onto further practice or play again</p>
+
+  <!-- New Play Again & Navigation Buttons -->
+  <div id="controls">
+    <button id="reset">🔁 Play Again</button>
+  </div>
+
+  <div id="columns">
+    <div class="column" id="col-ju"><h3>/juː/ – “you”</h3><div class="list"></div></div>
+    <div class="column" id="col-oo"><h3>/uː/ – “oo”</h3><div class="list"></div></div>
+    <div class="column" id="col-uh"><h3>/ʌ/ – “uh”</h3><div class="list"></div></div>
+    <div class="column" id="col-er"><h3>/ɜː/ – “er”</h3><div class="list"></div></div>
+  </div>
+
+   <div id="controls">
+     <a href="index.html" class="btn">🏠 Home</a>
+    <a href="furtherpractice.html" class="btn">🗂 Further Practice</a>
+    <a href="index.html" class="btn">🏠 Home</a>
+  </div>
+</main>
+
+<footer>© Koala Spies Sydney · Modern English Australia · All Rights Reserved</footer>
+
+<script>
+const words=[
+  {text:"unit",sound:"ju"},
+  {text:"uber",sound:"oo"},
+  {text:"uncle",sound:"uh"},
+  {text:"urban",sound:"er"},
+  {text:"utopia",sound:"ju"},
+  {text:"upgrade",sound:"uh"},
+  {text:"urge",sound:"er"},
+  {text:"unicorn",sound:"ju"}
+];
+let remaining=[...words];
+let current=null;
+
+const central=document.getElementById("central");
+const feedback=document.getElementById("feedback");
+const soundBtns=document.querySelectorAll(".sound-btn");
+
+/* === Play the spoken word === */
+function playWordAudio(word){
+  const a=new Audio(`audio/${word.text}.mp3`);
+  a.play().catch(()=>{
+    const msg=new SpeechSynthesisUtterance(word.text);
+    msg.lang="en-US";
+    speechSynthesis.speak(msg);
+  });
+}
+
+/* === Play button-specific feedback === */
+function playButtonSound(sound, result){
+  const file = `audio/${result}-${sound}.mp3`;
+  const a = new Audio(file);
+  a.play().catch(()=>{});
+}
+
+/* === CENTRAL BUTTON === */
+central.addEventListener("click",()=>{
+  if(!remaining.length){
+    feedback.textContent="✅ All words sorted!";
+    feedback.style.color="var(--success)";
+    return;
+  }
+  const i=Math.floor(Math.random()*remaining.length);
+  current=remaining[i];
+  central.textContent=current.text;
+  playWordAudio(current);
+  feedback.textContent="";
+  soundBtns.forEach(btn=>{
+    btn.classList.add("pulsing");
+    setTimeout(()=>btn.classList.remove("pulsing"),2000);
+  });
+});
+
+/* === DRAG & DROP === */
+central.setAttribute("draggable","true");
+central.addEventListener("dragstart",e=>{
+  if(!current){e.preventDefault();return;}
+  central.classList.add("dragging");
+  e.dataTransfer.setData("text/plain",current.sound);
+});
+central.addEventListener("dragend",()=>central.classList.remove("dragging"));
+
+soundBtns.forEach(btn=>{
+  const vid=btn.querySelector(".hint-video");
+  const label=btn.querySelector("span");
+
+  btn.addEventListener("dragover",e=>e.preventDefault());
+  btn.addEventListener("drop",e=>{
+    e.preventDefault();
+    if(!current)return;
+    const sound=btn.dataset.sound;
+
+    if(sound===current.sound){
+      btn.classList.add("correct");
+      feedback.textContent="✅ Correct!";
+      feedback.style.color="var(--success)";
+      playButtonSound(sound,"correct");
+
+      const div=document.createElement("div");
+      div.className="word";
+      div.textContent=current.text;
+      document.querySelector(`#col-${sound} .list`).appendChild(div);
+
+      remaining=remaining.filter(x=>x.text!==current.text);
+      current=null;
+      central.textContent="▶ Next";
+      setTimeout(()=>btn.classList.remove("correct"),1000);
+    } else {
+      btn.classList.add("wrong");
+      feedback.textContent="❌ Try again!";
+      feedback.style.color="var(--error)";
+      playButtonSound(sound,"wrong");
+      setTimeout(()=>btn.classList.remove("wrong"),800);
+    }
+  });
+
+  /* === HINT VIDEO === */
+  btn.addEventListener("click",()=>{
+    if(vid.style.display==="block"){return;}
+    label.style.display="none";
+    vid.style.display="block";
+    vid.currentTime=0;
+    vid.muted=false;
+    vid.play();
+    vid.onended=()=>{
+      vid.style.display="none";
+      label.style.display="flex";
+    };
+  });
+});
+
+/* === RESET / PLAY AGAIN === */
+document.getElementById("reset").addEventListener("click",()=>{
+  remaining=[...words];
+  current=null;
+  central.textContent="▶ Start";
+  feedback.textContent="";
+  document.querySelectorAll(".list").forEach(l=>l.innerHTML="");
+});
+</script>
+</body>
+</html>
