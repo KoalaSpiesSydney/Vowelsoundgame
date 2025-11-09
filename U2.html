@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sound Sorting Game – Modern English Australia</title>
+
+<style>
+:root {
+  --bg:#f2f5f6;
+  --card:#1e1f21;
+  --accent:#009688;
+  --accent-light:#33bba6;
+  --ink:#1c1e20;
+  --ink-light:#f5f5f5;
+  --success:#20c997;
+  --error:#e74c3c;
+  --shadow:0 6px 24px rgba(0,0,0,.25);
+  --radius:14px;
+}
+
+body {
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+/* ===== Header ===== */
+header {
+  background:var(--card);
+  color:var(--accent);
+  text-align:center;
+  padding:1.2rem 0;
+  font-size:1.5rem;
+  font-weight:bold;
+  letter-spacing:2px;
+  border-bottom:1px solid var(--line);
+}
+header span {
+  color:#f5f5f5;
+  font-weight:300;
+  display:block;
+  font-size:1rem;
+  letter-spacing:3px;
+}
+
+/* ===== Layout ===== */
+main {
+  flex:1;
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  padding:1rem 2rem 3rem;
+}
+
+.instructions {
+  margin:1.5rem auto;
+  max-width:900px;
+  line-height:1.6;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:1.5rem 2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.instructions h2 {
+  color:var(--accent);
+  text-align:center;
+  margin-top:0;
+}
+
+/* ===== Video Cards ===== */
+.vowel-block {
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
+  padding:1rem;
+  margin:1rem 0;
+}
+.vowel-block h3 {
+  margin-top:0;
+  color:var(--accent);
+}
+.vowel-video {
+  display:block;
+  width:5cm;
+  aspect-ratio:16 / 9;
+  max-width:240px;
+  margin:0.5rem auto;
+  border-radius:8px;
+  cursor:pointer;
+  background:#000;
+  transition:transform 0.25s ease;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+}
+.vowel-video:hover { transform:scale(1.05); }
+.vowel-desc {
+  font-size:0.95rem;
+  color:var(--muted);
+  text-align:center;
+  margin-top:0.5rem;
+}
+
+/* ===== Game ===== */
+.game {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;
+  margin-top:2rem;
+}
+.column {
+  background:#fff;
+  border:2px solid var(--line);
+  border-radius:20px;
+  padding:1rem;
+  text-align:center;
+  box-shadow:0 0 8px rgba(0,0,0,0.15);
+  transition:transform .25s ease;
+}
+.column:hover {
+  transform:scale(1.03);
+  box-shadow:0 0 16px rgba(255,122,26,0.25);
+}
+.column h3 {
+  margin-top:0;
+  color:var(--accent);
+  font-size:1.2rem;
+}
+.bin-word { margin:.3rem 0; border-radius:6px; padding:.3rem; font-size:1.1rem; }
+.green{color:var(--success);} .red{color:var(--error);}
+
+/* ===== Buttons & Footer ===== */
+button,.btn {
+  background:var(--accent);
+  color:#fff;
+  padding:.7rem 1.4rem;
+  border:none;
+  border-radius:45px;
+  cursor:pointer;
+  font-size:1rem;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 2px 6px rgba(0,0,0,0.25);
+  transition:all 0.25s ease;
+}
+button:hover,.btn:hover {
+  background:linear-gradient(90deg,var(--accent),#ff9b3d);
+  transform:translateY(-2px);
+}
+button:active,.btn:active { transform:translateY(0); }
+
+.links {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:1rem;
+  margin:3rem auto 1rem;
+}
+
+#feedback {
+  text-align:center;
+  height:1.5rem;
+  margin:1rem 0;
+  font-weight:bold;
+}
+
+footer {
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:.9rem;
+  text-align:center;
+  background:var(--card);
+  padding:1rem;
+}
+.bucket-video {
+  display:block;
+  width:5cm;             /* ~5 cm wide */
+  aspect-ratio:16/9;
+  max-width:120px;       /* responsive cap */
+  margin:0.6rem auto 0;
+  border-radius:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  background:#000;
+  cursor:pointer;
+  transition:transform 0.25s ease;
+}
+.bucket-video:hover {
+  transform:scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+<header>
+  MODERN ENGLISH AUSTRALIA
+  <span>4 ways to say "U" at the beginning of English words</span>
+</header>
+
+<main>
+
+
+<div class="game">
+  <div class="column" id="ju">
+    <h3>/juː/ – “you”</h3>
+    <div class="list"></div>
+    <video src="you-sound.mp4" class="bucket-video" autoplay muted loop playsinline></video>
+  </div>
+
+  <div class="column" id="oo">
+    <h3>/uː/ – “oo”</h3>
+    <div class="list"></div>
+    <video src="oops.mp4" class="bucket-video" autoplay muted loop playsinline></video>
+  </div>
+
+  <div class="column" id="uh">
+    <h3>/ʌ/ – “uh”</h3>
+    <div class="list"></div>
+    <video src="uh-sound.mp4" class="bucket-video" autoplay muted loop playsinline></video>
+  </div>
+
+  <div class="column" id="er">
+    <h3>/ɜː/ – “er”</h3>
+    <div class="list"></div>
+    <video src="er-sound.mp4" class="bucket-video" autoplay muted loop playsinline></video>
+  </div>
+</div>
+
+<section class="instructions" id="part2">
+  <h2>Part 2 – Complete These Sentences</h2>
+  <p><strong>Goal:</strong> Practise listening for <b>U</b>-starting words in real sentences. Click <em>Play</em> to hear a sentence. The target word will appear as an orange tile—drag it into the correct bucket below.</p>
+
+  <ul>
+    <li><b>Example 1:</b> Listen and complete → <audio controls src="audio/example1.mp3"></audio></li>
+    <li><b>Example 2:</b> Listen and complete → <audio controls src="audio/example2.mp3"></audio></li>
+    <li><b>Example 3:</b> Listen and complete → <audio controls src="audio/example3.mp3"></audio></li>
+  </ul>
+
+  <div style="text-align:center; margin-top:1rem;">
+    <button id="playPart2">▶️ Play Sentence</button>
+  </div>
+
+  <div id="part2TileBank" class="tile-bank" style="margin-top:1rem;"></div>
+  <p style="text-align:center; color:var(--muted); margin-top:.5rem;">
+    Drag the orange tile into the correct sound bucket below (/juː/, /uː/, /ʌ/, /ɜː/).
+  </p>
+</section>
+
+
+<!-- ===== PART 3 ===== -->
+<section class="instructions">
+  <h2>Part 3 – Answer These Questions</h2>
+  <p>Short-answer questions in PTE test your listening and pronunciation.  
+     Respond using words from Part 1 and focus on producing the correct vowel sound.</p>
+
+  <ol>
+    <li>Which radioactive element has the symbol <b>U</b>? <audio controls src="audio/q1.mp3"></audio></li>
+    <li>What is it called when a vehicle makes a 180-degree turn on the road? <audio controls src="audio/q2.mp3"></audio></li>
+    <li>What term describes an imagined perfect society where everything is ideal? <audio controls src="audio/q3.mp3"></audio></li>
+  </ol>
+</section>
+
+<!-- ===== Buttons ===== -->
+<div class="links">
+  <button id="reset">🔁 Try Again</button>
+  <a href="Moneyidioms.html" class="btn">⬅ Back to Matching Game</a>
+</div>
+</main>
+
+<footer>
+  © Koala Spies Sydney · Modern English Australia · All Rights Reserved
+</footer>
+
+c<!-- ===== JS: Game + Video Audio ===== -->
+<script>
+/* ============================================================
+   PART 1 – WORD SORTING GAME
+============================================================ */
+const words = [
+  { text: "unit", sound: "ju" }, { text: "uber", sound: "oo" },
+  { text: "unilateral", sound: "ju" }, { text: "user", sound: "ju" },
+  { text: "universe", sound: "ju" }, { text: "uncle", sound: "uh" },
+  { text: "upgrade", sound: "uh" }, { text: "unify", sound: "ju" },
+  { text: "urge", sound: "er" }, { text: "ubiquitous", sound: "ju" },
+  { text: "Oolong tea", sound: "oo" }, { text: "ukraine", sound: "ju" },
+  { text: "Uganda", sound: "ju" }, { text: "Uzbekistan", sound: "oo" },
+  { text: "uppercase", sound: "uh" }, { text: "unicorn", sound: "ju" },
+  { text: "utopia", sound: "ju" }, { text: "urban", sound: "er" },
+  { text: "unbelievable", sound: "uh" }, { text: "understand", sound: "uh" },
+  { text: "usurp", sound: "ju" }, { text: "uptown", sound: "uh" },
+  { text: "U-turn", sound: "ju" }
+];
+
+let remaining = [...words];
+let currentWord = null;
+const playButton = document.getElementById("playWord");
+const feedback = document.getElementById("feedback");
+
+playButton.addEventListener("click", () => {
+  feedback.textContent = "";
+  if (!remaining.length) {
+    feedback.textContent = "✅ All words sorted!";
+    feedback.className = "green";
+    return;
+  }
+  const i = Math.floor(Math.random() * remaining.length);
+  currentWord = remaining[i];
+  const audio = new Audio(`audio/${currentWord.text}.mp3`);
+  audio.play().catch(() => {
+    const msg = new SpeechSynthesisUtterance(currentWord.text);
+    msg.lang = "en-US";
+    window.speechSynthesis.speak(msg);
+  });
+});
+
+document.querySelectorAll(".column").forEach(col => {
+  col.addEventListener("click", () => {
+    if (!currentWord) return;
+    const ok = col.id === currentWord.sound;
+    if (ok) {
+      const w = document.createElement("div");
+      w.textContent = currentWord.text;
+      w.classList.add("bin-word", "green");
+      col.querySelector(".list").appendChild(w);
+      feedback.textContent = "✅ Correct!";
+      feedback.className = "green";
+      remaining = remaining.filter(x => x.text !== currentWord.text);
+      currentWord = null;
+      new Audio("audio/correct.mp3").play().catch(()=>{});
+    } else {
+      feedback.textContent = "❌ Try again!";
+      feedback.className = "red";
+      new Audio("audio/wrong.mp3").play().catch(()=>{});
+    }
+  });
+});
+
+/* ============================================================
+   PART 1 – VIDEO + MP3 LINKING
+============================================================ */
+
+const part2Btn = document.getElementById("playPart2");
+const part2Bank = document.getElementById("part2TileBank");
+
+function makeTile(text, targetSound) {
+  const btn = document.createElement("button");
+  btn.className = "tile";
+  btn.textContent = text;
+  btn.setAttribute("draggable", "true");
+  btn.dataset.sound = targetSound;
+
+  btn.addEventListener("dragstart", e => {
+    e.dataTransfer.setData("text/plain", JSON.stringify({ word: text, sound: targetSound }));
+    document.querySelectorAll(".column").forEach(col => col.classList.add("drop-target"));
+  });
+  btn.addEventListener("dragend", () => {
+    document.querySelectorAll(".column").forEach(col =>
+      col.classList.remove("drop-target", "drop-correct", "drop-wrong")
+    );
+  });
+  return btn;
+}
+
+if (part2Btn) {
+  part2Btn.addEventListener("click", () => {
+    const item = part2Items[part2Index % part2Items.length];
+    part2Index++;
+    new Audio(`audio/${item.mp3}`).play().catch(()=>{});
+    part2Bank.innerHTML = "";
+    part2Bank.appendChild(makeTile(item.word, item.sound));
+  });
+}
+
+// Bucket drop handling
+document.querySelectorAll(".column").forEach(col => {
+  col.addEventListener("dragover", e => e.preventDefault());
+  col.addEventListener("drop", e => {
+    e.preventDefault();
+    let data = {};
+    try { data = JSON.parse(e.dataTransfer.getData("text/plain") || "{}"); } catch {}
+    if (!data.sound) return;
+
+    const correct = col.id === data.sound;
+    col.classList.remove("drop-correct", "drop-wrong");
+    col.classList.add(correct ? "drop-correct" : "drop-wrong");
+    setTimeout(() => col.classList.remove("drop-correct", "drop-wrong"), 700);
+
+    if (correct) {
+      const w = document.createElement("div");
+      w.className = "bin-word green";
+      w.textContent = data.word;
+      col.querySelector(".list").appendChild(w);
+      [...part2Bank.querySelectorAll(".tile")].forEach(t => {
+        if (t.textContent.trim().toLowerCase() === data.word.toLowerCase()) {
+          t.style.opacity = "0.35";
+          t.draggable = false;
+          setTimeout(() => t.remove(), 150);
+        }
+      });
+      new Audio("audio/correct.mp3").play().catch(()=>{});
+    } else {
+      new Audio("audio/wrong.mp3").play().catch(()=>{});
+      part2Bank.style.transform = "translateX(-6px)";
+      setTimeout(() => (part2Bank.style.transform = "translateX(6px)"), 80);
+      setTimeout(() => (part2Bank.style.transform = "translateX(0)"), 160);
+    }
+  });
+});
+</script> 
+</body>
+</html>
