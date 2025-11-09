@@ -303,6 +303,7 @@ const words=[
 ];
 let remaining=[...words];
 let current=null;
+let selected=false; // for tap system
 
 const central=document.getElementById("central");
 const feedback=document.getElementById("feedback");
@@ -337,13 +338,14 @@ central.addEventListener("click",()=>{
   central.textContent=current.text;
   playWordAudio(current);
   feedback.textContent="";
+  selected=true; // ready for tap selection
   soundBtns.forEach(btn=>{
     btn.classList.add("pulsing");
     setTimeout(()=>btn.classList.remove("pulsing"),2000);
   });
 });
 
-/* === DRAG & DROP === */
+/* === DRAG & DROP (Desktop) === */
 central.setAttribute("draggable","true");
 central.addEventListener("dragstart",e=>{
   if(!current){e.preventDefault();return;}
@@ -352,63 +354,83 @@ central.addEventListener("dragstart",e=>{
 });
 central.addEventListener("dragend",()=>central.classList.remove("dragging"));
 
+/* === SOUND BUTTONS === */
 soundBtns.forEach(btn=>{
   const vid=btn.querySelector(".hint-video");
   const label=btn.querySelector("span");
 
+  // drag-drop handling
   btn.addEventListener("dragover",e=>e.preventDefault());
   btn.addEventListener("drop",e=>{
     e.preventDefault();
     if(!current)return;
     const sound=btn.dataset.sound;
-
-    if(sound===current.sound){
-      btn.classList.add("correct");
-      feedback.textContent="✅ Correct!";
-      feedback.style.color="var(--success)";
-      playButtonSound(sound,"correct");
-
-      const div=document.createElement("div");
-      div.className="word";
-      div.textContent=current.text;
-      document.querySelector(`#col-${sound} .list`).appendChild(div);
-
-      remaining=remaining.filter(x=>x.text!==current.text);
-      current=null;
-      central.textContent="▶ Next";
-      setTimeout(()=>btn.classList.remove("correct"),1000);
-    } else {
-      btn.classList.add("wrong");
-      feedback.textContent="❌ Try again!";
-      feedback.style.color="var(--error)";
-      playButtonSound(sound,"wrong");
-      setTimeout(()=>btn.classList.remove("wrong"),800);
-    }
+    handleAnswer(sound, btn);
   });
 
-  /* === HINT VIDEO === */
+  // tap-to-select system
   btn.addEventListener("click",()=>{
-    if(vid.style.display==="block"){return;}
-    label.style.display="none";
-    vid.style.display="block";
-    vid.currentTime=0;
-    vid.muted=false;
-    vid.play();
-    vid.onended=()=>{
-      vid.style.display="none";
-      label.style.display="flex";
-    };
+    // If there's a current word waiting for answer:
+    if(selected && current){
+      handleAnswer(btn.dataset.sound, btn);
+      return;
+    }
+
+    // Otherwise play hint video
+    if(!current){
+      if(vid.style.display==="block")return;
+      label.style.display="none";
+      vid.style.display="block";
+      vid.currentTime=0;
+      vid.muted=false;
+      vid.play();
+      vid.onended=()=>{
+        vid.style.display="none";
+        label.style.display="flex";
+      };
+    }
   });
 });
 
-/* === RESET / PLAY AGAIN === */
+/* === Handle answer for both tap and drag === */
+function handleAnswer(sound, btn){
+  if(sound===current.sound){
+    btn.classList.add("correct");
+    feedback.textContent="✅ Correct!";
+    feedback.style.color="var(--success)";
+    playButtonSound(sound,"correct");
+
+    const div=document.createElement("div");
+    div.className="word";
+    div.textContent=current.text;
+    document.querySelector(`#col-${sound} .list`).appendChild(div);
+
+    remaining=remaining.filter(x=>x.text!==current.text);
+    current=null;
+    selected=false;
+    central.textContent="▶ Next";
+    setTimeout(()=>btn.classList.remove("correct"),1000);
+  } else {
+    btn.classList.add("wrong");
+    feedback.textContent="❌ Try again!";
+    feedback.style.color="var(--error)";
+    playButtonSound(sound,"wrong");
+    setTimeout(()=>btn.classList.remove("wrong"),800);
+  }
+}
+
+/* === RESET === */
 document.getElementById("reset").addEventListener("click",()=>{
   remaining=[...words];
   current=null;
+  selected=false;
   central.textContent="▶ Start";
   feedback.textContent="";
   document.querySelectorAll(".list").forEach(l=>l.innerHTML="");
 });
 </script>
+
+</script>
 </body>
 </html>
+
