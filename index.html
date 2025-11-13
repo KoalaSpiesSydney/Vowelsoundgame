@@ -19,7 +19,7 @@
   --radius:14px;
 }
 
-/* === Base === */
+/* === BASE === */
 *{box-sizing:border-box;}
 body{
   margin:0;
@@ -31,7 +31,7 @@ body{
   min-height:100vh;
 }
 
-/* === Header === */
+/* === HEADER === */
 header{
   background:linear-gradient(to right,#1e1f21,#2e3236);
   color:var(--ink-light);
@@ -51,7 +51,7 @@ header span{
   margin-top:.3rem;
 }
 
-/* === Main Layout === */
+/* === MAIN === */
 main{
   flex:1;
   display:flex;
@@ -61,8 +61,11 @@ main{
   padding:1.5rem 1rem 2.5rem;
   text-align:center;
 }
+p{
+    margin-bottom: 10px;
+}
 
-/* === Lesson Link === */
+/* === LESSON LINK === */
 .lesson-link{
   margin:1rem 0;
   font-size:1.1rem;
@@ -74,7 +77,7 @@ main{
 }
 .lesson-link a:hover{text-decoration:underline;}
 
-/* === Instructions === */
+/* === INSTRUCTIONS === */
 .instructions{
   max-width:600px;
   background:#fff;
@@ -89,18 +92,21 @@ main{
   margin-top:0;
 }
 
-/* === Central Game Zone === */
+/* === GAME ZONE === */
 #game-zone{
   position:relative;
   width:min(600px,90%);
   aspect-ratio:1/1;
-  margin:1.5rem auto;
+  margin:2.5rem auto;
   display:flex;
   align-items:center;
   justify-content:center;
 }
+
+/* Central bubble */
 #central{
-  width:150px;height:150px;
+  width:150px;
+  height:150px;
   border-radius:50%;
   background:linear-gradient(135deg,var(--accent),var(--accent-light));
   color:#fff;
@@ -112,15 +118,16 @@ main{
   cursor:pointer;
   user-select:none;
   box-shadow:var(--shadow);
+  padding:0.5rem;
   transition:transform .25s,box-shadow .25s;
 }
-#central:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(0,150,136,0.6);}
-#central.dragging{opacity:.85;transform:scale(1.1);}
+#central:hover{transform:scale(1.05);}
 
-/* === Sound Buttons === */
+/* Sound circles */
 .sound-btn{
   position:absolute;
-  width:150px;height:150px;
+  width:150px;
+  height:150px;
   border-radius:50%;
   background:#fff;
   border:4px solid var(--accent);
@@ -135,25 +142,16 @@ main{
   overflow:hidden;
 }
 .sound-btn:hover{transform:scale(1.07);}
-.sound-btn.correct{background:var(--success);color:#fff;animation:glow 1s ease;}
+
+.sound-btn.correct{background:var(--success);color:#fff;}
 .sound-btn.wrong{background:var(--error);color:#fff;}
-@keyframes glow{
-  0%{box-shadow:0 0 0px var(--success);}
-  50%{box-shadow:0 0 24px var(--success);}
-  100%{box-shadow:0 0 0px var(--success);}
-}
-@keyframes pulse{
-  0%{box-shadow:0 0 0px rgba(0,150,136,0);}
-  50%{box-shadow:0 0 25px rgba(0,150,136,0.6);}
-  100%{box-shadow:0 0 0px rgba(0,150,136,0);}
-}
-.sound-btn.pulsing{animation:pulse 1.8s ease-in-out;}
+
 #btn-ju{top:0;left:50%;transform:translate(-50%,-25%);}
 #btn-oo{right:0;top:50%;transform:translate(25%,-50%);}
 #btn-uh{bottom:0;left:50%;transform:translate(-50%,25%);}
 #btn-er{left:0;top:50%;transform:translate(-25%,-50%);}
 
-/* === Hint Videos === */
+/* Hint video inside buttons */
 .hint-video{
   width:100%;
   height:100%;
@@ -162,14 +160,14 @@ main{
   display:none;
 }
 
-/* === Feedback === */
+/* === FEEDBACK === */
 #feedback{
   font-weight:700;
   height:1.6rem;
   margin:.8rem 0 1.2rem;
 }
 
-/* === Controls === */
+/* === CONTROLS === */
 #controls{
   display:flex;
   flex-wrap:wrap;
@@ -188,15 +186,13 @@ button,.btn{
   cursor:pointer;
   box-shadow:0 3px 8px rgba(0,0,0,0.2);
   transition:background .25s,transform .25s;
-  text-decoration:none;
 }
 button:hover,.btn:hover{
   background:var(--accent-light);
   transform:translateY(-2px);
 }
-button:active,.btn:active{transform:translateY(0);}
 
-/* === Columns === */
+/* === COLUMNS === */
 #columns{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -214,7 +210,10 @@ button:active,.btn:active{transform:translateY(0);}
   text-align:center;
   box-shadow:0 0 8px rgba(0,0,0,0.15);
 }
-.column h3{margin-top:0;color:var(--accent);}
+.column h3{
+  margin-top:0;
+  color:var(--accent);
+}
 .word{
   margin:.3rem auto;
   padding:.25rem .7rem;
@@ -225,7 +224,7 @@ button:active,.btn:active{transform:translateY(0);}
   font-weight:600;
 }
 
-/* === Footer === */
+/* === FOOTER === */
 footer{
   text-align:center;
   background:var(--card);
@@ -234,28 +233,106 @@ footer{
   padding:1rem;
 }
 
-/* === Responsive === */
-@media (min-width:800px){
-  #central{width:180px;height:180px;font-size:1.25rem;}
-  .sound-btn{width:180px;height:180px;font-size:1.25rem;}
+/* ===========================================================
+   ===============   MOBILE RESPONSIVE FIXES  ================
+   =========================================================== */
+
+@media (max-width: 600px) {
+
+  /* More breathing room */
+  #game-zone{
+    width:100%;
+    aspect-ratio:1 / 1.25;
+    margin-top:1rem;
+  }
+
+  /* Bigger centre bubble */
+  #central{
+    width:220px;
+    height:220px;
+    font-size:clamp(1.4rem, 6vw, 2rem);
+    padding:0.7rem;
+    line-height:1.2;
+  }
+
+  /* Smaller outer buttons */
+  .sound-btn{
+    width:120px;
+    height:120px;
+    font-size:clamp(1.1rem, 4vw, 1.4rem);
+  }
+
+  /* Adjust positions */
+  #btn-ju{transform:translate(-50%,-35%);}
+  #btn-oo{transform:translate(35%,-50%);}
+  #btn-uh{transform:translate(-50%,35%);}
+  #btn-er{transform:translate(-35%,-50%);}
+
+  /* Header spacing */
+  header{
+    font-size:1.3rem;
+    padding:1rem 0.4rem;
+  }
+  header span{
+    font-size:.8rem;
+  }
+
+  /* Buttons */
+  #controls button,
+  #controls .btn{
+    padding:.9rem 1.6rem;
+    font-size:1rem;
+  }
+
+  /* Columns spacing */
+  #columns{
+    gap:1.5rem;
+  }
 }
+
 </style>
 </head>
 
 <body>
+
 <header>
   MODERN ENGLISH AUSTRALIA
-  <span>"U" One Letter - Four Sounds</span>
+  <span>"U" One Letter – Four Sounds</span>
 </header>
 
 <main>
-  <p>Are you having problems differentiating the four sounds of "U" in English?
-    <b></b>If so, click on the buttons below to hear the sound and see it spoken. Then play this game.
-  </p>
+    
+  <div class="instructions">
+  <p> <h2> The four sounds of U</h2>
+    <b></b>Click on the buttons below to hear the sound and see it spoken. <br>Then play this game.
+  </p></div>
 
-  <p class="lesson-link">
-    📘 <a href="u3.html" target="_blank">Click here for the full lesson and pronunciation hints</a>
-  </p>
+
+  <!-- === GAME ZONE === -->
+  <div id="game-zone">
+    <div id="central">▶ Start</div>
+
+    <div id="btn-ju" class="sound-btn" data-sound="ju">
+      <span>/juː/ <br>You United</span>
+      <video id="hint-ju" class="hint-video" src="yousound.mp4" playsinline muted></video>
+    </div>
+
+    <div id="btn-oo" class="sound-btn" data-sound="oo">
+      <span>/uː/br oops</span>
+      <video id="hint-oo" class="hint-video" src="oops.mp4" playsinline muted></video>
+    </div>
+
+    <div id="btn-uh" class="sound-btn" data-sound="uh">
+      <span>/ʌ/ <br> under umbrella</span>
+      <video id="hint-uh" class="hint-video" src="ahsound.mp4" playsinline muted></video>
+    </div>
+
+    <div id="btn-er" class="sound-btn" data-sound="er">
+      <span>/ɜː/ <br>ur urgent</span>
+      <video id="hint-er" class="hint-video" src="uhsound.mp4" playsinline muted></video>
+    </div>
+  </div>
+
 
   <div class="instructions">
     <h2>How to Play</h2>
@@ -265,38 +342,16 @@ footer{
     <p>💬 <b>Press any sound circle</b> to see a short pronunciation hint.</p>
   </div>
 
-  <!-- === Game Zone === -->
-  <div id="game-zone">
-    <div id="central">▶ Start</div>
-
-    <div id="btn-ju" class="sound-btn" data-sound="ju">
-      <span>/juː/</span>
-      <video id="hint-ju" class="hint-video" src="yousound.mp4" playsinline muted></video>
-    </div>
-    <div id="btn-oo" class="sound-btn" data-sound="oo">
-      <span>/uː/</span>
-      <video id="hint-oo" class="hint-video" src="oops.mp4" playsinline muted></video>
-    </div>
-    <div id="btn-uh" class="sound-btn" data-sound="uh">
-      <span>/ʌ/</span>
-      <video id="hint-uh" class="hint-video" src="ahsound.mp4" playsinline muted></video>
-    </div>
-    <div id="btn-er" class="sound-btn" data-sound="er">
-      <span>/ɜː/</span>
-      <video id="hint-er" class="hint-video" src="uhsound.mp4" playsinline muted></video>
-    </div>
-  </div>
-
   <div id="feedback"></div>
 
   <p>Review the words in the columns below, then go to further practice or play again.</p>
 
-  <!-- === Controls === -->
+  <!-- Controls -->
   <div id="controls">
     <button id="reset">🔁 Play Again</button>
   </div>
 
-  <!-- === Columns === -->
+  <!-- Columns -->
   <div id="columns">
     <div class="column" id="col-ju"><h3>/juː/ – “you”</h3><div class="list"></div></div>
     <div class="column" id="col-oo"><h3>/uː/ – “oo”</h3><div class="list"></div></div>
@@ -304,11 +359,14 @@ footer{
     <div class="column" id="col-er"><h3>/ɜː/ – “er”</h3><div class="list"></div></div>
   </div>
 
-  <!-- === Navigation === -->
+  <!-- Navigation -->
   <div id="controls">
     <a href="index.html" class="btn">🏠 Home</a>
     <a href="U2.html" class="btn">🗂 Further Practice</a>
   </div>
+  <p class="lesson-link">
+    📘 <a href="u3.html" target="_blank">Click here for the full lesson and pronunciation hints</a>
+  </p>
 </main>
 
 <footer>© Koala Spies Sydney · Modern English Australia · All Rights Reserved</footer>
@@ -323,20 +381,29 @@ const words=[
   {text:"uptown",sound:"uh"},
   {text:"upgrade",sound:"uh"},
   {text:"Uzbekistan",sound:"oo"},
+  {text:"Europe",sound:"ju"},
+  {text:"union",sound:"ju"},
   {text:"urge",sound:"er"},
   {text:"Ukraine",sound:"ju"},
   {text:"unbelievable",sound:"uh"},
   {text:"uniform",sound:"ju"},
   {text:"uppercase",sound:"uh"},
+  {text:"ultimate",sound:"uh"},
   {text:"uranium",sound:"ju"},
   {text:"user",sound:"ju"},
   {text:"utility",sound:"ju"},
   {text:"uncle",sound:"uh"},
   {text:"oolong tea",sound:"oo"},
   {text:"Uganda",sound:"ju"},
+  {text:"Eurovision",sound:"ju"},
   {text:"usurp",sound:"ju"},
-  {text:"unique",sound:"ju"}
+  {text:"urban",sound:"er"},
+  {text:"unique",sound:"ju"},
+  {text:"ooze",sound:"oo"},
+  {text:"universal",sound:"ju"},
+  {text:"unsuitable",sound:"uh"}
 ];
+
 let remaining=[...words];
 let current=null;
 let selected=false;
@@ -345,7 +412,7 @@ const central=document.getElementById("central");
 const feedback=document.getElementById("feedback");
 const soundBtns=document.querySelectorAll(".sound-btn");
 
-/* === Play the spoken word === */
+/* Play word audio */
 function playWordAudio(word){
   const a=new Audio(`audio/${word.text}.mp3`);
   a.play().catch(()=>{
@@ -355,14 +422,13 @@ function playWordAudio(word){
   });
 }
 
-/* === Play button feedback === */
 function playButtonSound(sound, result){
   const file=`audio/${result}-${sound}.mp3`;
   const a=new Audio(file);
   a.play().catch(()=>{});
 }
 
-/* === CENTRAL BUTTON === */
+/* Central button */
 central.addEventListener("click",()=>{
   if(!remaining.length){
     feedback.textContent="✅ All words sorted!";
@@ -375,13 +441,14 @@ central.addEventListener("click",()=>{
   playWordAudio(current);
   feedback.textContent="";
   selected=true;
+
   soundBtns.forEach(btn=>{
     btn.classList.add("pulsing");
     setTimeout(()=>btn.classList.remove("pulsing"),2000);
   });
 });
 
-/* === DRAG & DROP (Desktop) === */
+/* Drag and drop */
 central.setAttribute("draggable","true");
 central.addEventListener("dragstart",e=>{
   if(!current){e.preventDefault();return;}
@@ -390,7 +457,7 @@ central.addEventListener("dragstart",e=>{
 });
 central.addEventListener("dragend",()=>central.classList.remove("dragging"));
 
-/* === SOUND BUTTONS === */
+/* Sound button behaviour */
 soundBtns.forEach(btn=>{
   const vid=btn.querySelector(".hint-video");
   const label=btn.querySelector("span");
@@ -399,8 +466,7 @@ soundBtns.forEach(btn=>{
   btn.addEventListener("drop",e=>{
     e.preventDefault();
     if(!current)return;
-    const sound=btn.dataset.sound;
-    handleAnswer(sound,btn);
+    handleAnswer(btn.dataset.sound,btn);
   });
 
   btn.addEventListener("click",()=>{
@@ -423,7 +489,7 @@ soundBtns.forEach(btn=>{
   });
 });
 
-/* === Handle Answer === */
+/* Handle answer */
 function handleAnswer(sound,btn){
   if(sound===current.sound){
     btn.classList.add("correct");
@@ -450,7 +516,7 @@ function handleAnswer(sound,btn){
   }
 }
 
-/* === RESET === */
+/* Reset */
 document.getElementById("reset").addEventListener("click",()=>{
   remaining=[...words];
   current=null;
@@ -460,6 +526,6 @@ document.getElementById("reset").addEventListener("click",()=>{
   document.querySelectorAll(".list").forEach(l=>l.innerHTML="");
 });
 </script>
+
 </body>
 </html>
-
