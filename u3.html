@@ -17,8 +17,11 @@
   --error:#e74c3c;
   --shadow:0 6px 24px rgba(0,0,0,.25);
   --radius:14px;
+  --line:#3a3a3a;
+  --muted:#bbbbbb;
 }
 
+/* ===== Base ===== */
 body {
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
@@ -48,7 +51,7 @@ header span {
   letter-spacing:3px;
 }
 
-/* ===== Layout ===== */
+/* ===== Main Layout ===== */
 main {
   flex:1;
   width:100%;
@@ -57,6 +60,7 @@ main {
   padding:1rem 2rem 3rem;
 }
 
+/* ===== Instructions Section ===== */
 .instructions {
   margin:1.5rem auto;
   max-width:900px;
@@ -73,11 +77,11 @@ main {
   margin-top:0;
 }
 
-/* ===== Video Cards ===== */
+/* ===== Video Blocks ===== */
 .vowel-block {
   background:#fff;
   border:1px solid var(--line);
-  border-radius:10px;
+  border-radius:12px;
   box-shadow:0 4px 16px rgba(0,0,0,0.1);
   padding:1rem;
   margin:1rem 0;
@@ -86,151 +90,146 @@ main {
   margin-top:0;
   color:var(--accent);
 }
+
 .vowel-video {
   display:block;
-  width:5cm;
-  aspect-ratio:16 / 9;
-  max-width:240px;
-  margin:0.5rem auto;
-  border-radius:8px;
+  width:100%;
+  max-width:260px;
+  aspect-ratio:16/9;
+  margin:0.6rem auto 0;
+  border-radius:10px;
   cursor:pointer;
   background:#000;
-  transition:transform 0.25s ease;
   box-shadow:0 2px 8px rgba(0,0,0,0.2);
-}
-.vowel-video:hover { transform:scale(1.05); }
-.vowel-desc {
-  font-size:0.95rem;
-  color:var(--muted);
-  text-align:center;
-  margin-top:0.5rem;
-}
-
-/* ===== Game ===== */
-.game {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:1rem;
-  margin-top:2rem;
-}
-.column {
-  background:#fff;
-  border:2px solid var(--line);
-  border-radius:20px;
-  padding:1rem;
-  text-align:center;
-  box-shadow:0 0 8px rgba(0,0,0,0.15);
   transition:transform .25s ease;
 }
-.column:hover {
-  transform:scale(1.03);
-  box-shadow:0 0 16px rgba(255,122,26,0.25);
+.vowel-video:hover {
+  transform:scale(1.05);
 }
-.column h3 {
-  margin-top:0;
-  color:var(--accent);
-  font-size:1.2rem;
-}
-.bin-word { margin:.3rem 0; border-radius:6px; padding:.3rem; font-size:1.1rem; }
-.green{color:var(--success);} .red{color:var(--error);}
 
-/* ===== Buttons & Footer ===== */
-button,.btn {
-  background:var(--accent);
-  color:#fff;
-  padding:.7rem 1.4rem;
-  border:none;
-  border-radius:45px;
-  cursor:pointer;
-  font-size:1rem;
-  text-decoration:none;
-  font-weight:600;
-  box-shadow:0 2px 6px rgba(0,0,0,0.25);
-  transition:all 0.25s ease;
+.vowel-desc {
+  text-align:center;
+  color:var(--muted);
+  margin-top:0.5rem;
+  font-size:0.95rem;
 }
-button:hover,.btn:hover {
-  background:linear-gradient(90deg,var(--accent),#ff9b3d);
-  transform:translateY(-2px);
-}
-button:active,.btn:active { transform:translateY(0); }
 
+/* ===== Navigation Buttons ===== */
 .links {
   display:flex;
   justify-content:center;
-  align-items:center;
   gap:1rem;
-  margin:3rem auto 1rem;
+  margin:2.5rem 0 1rem;
 }
 
-#feedback {
-  text-align:center;
-  height:1.5rem;
-  margin:1rem 0;
+.btn {
+  background:var(--accent);
+  color:#fff;
+  padding:.75rem 1.6rem;
+  border-radius:40px;
   font-weight:bold;
+  text-decoration:none;
+  font-size:1rem;
+  box-shadow:0 3px 10px rgba(0,0,0,0.2);
+  transition:all .25s ease;
+}
+.btn:hover {
+  background:var(--accent-light);
+  transform:translateY(-2px);
 }
 
+/* ===== Footer ===== */
 footer {
-  border-top:1px solid var(--line);
-  color:var(--muted);
-  font-size:.9rem;
+  margin-top:auto;
   text-align:center;
   background:var(--card);
-  padding:1rem;
-}
-.bucket-video {
-  display:block;
-  width:5cm;             /* ~5 cm wide */
-  aspect-ratio:16/9;
-  max-width:120px;       /* responsive cap */
-  margin:0.6rem auto 0;
-  border-radius:8px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-  background:#000;
-  cursor:pointer;
-  transition:transform 0.25s ease;
-}
-.bucket-video:hover {
-  transform:scale(1.05);
+  color:var(--ink-light);
+  padding:1.2rem;
+  font-size:0.9rem;
+  border-top:1px solid var(--line);
 }
 
 </style>
 </head>
 
 <body>
+
 <header>
   MODERN ENGLISH AUSTRALIA
-  <span>4 ways to say "U" at the beginning of English words</span>
+  <span>4 Sounds of U</span>
 </header>
 
 <main>
-<!-- ===== PART 1 ===== -->
+
+<!-- ===== PART 1: VIDEO HINTS ===== -->
 <section class="instructions">
-  <h2>Part 1 – Identify the Sound</h2>
-  <p><strong>Lesson:</strong> Listening and speaking are connected. Notice how your mouth, lips, tongue, and jaw move. Some sounds come from airflow only; others use the vocal cords. Click the short videos below to hear each sound once with pronunciation.</p>
+  <h2>HINT — The 4 Sounds of U</h2>
+  <p><strong>Lesson:</strong> Listening and speaking are connected. To make the sound you need to notice how your mouth, lips, tongue, and jaw move. Click the short videos below to hear each sound clearly.</p>
 
+  <!-- /juː/ -->
   <div class="vowel-block">
-    <h3>/juː/ — “you” sound (like <i>university</i>)</h3>
-    <video src="yousound.mp4" class="vowel-video" autoplay muted loop playsinline></video>
-    <p class="vowel-desc">The lips start rounded, then spread slightly as the tongue moves from high back to front. Air flows smoothly as the voice continues.</p>
+    <h3>/juː/ — “you” sound (unit, use, university)</h3>
+    <video src="yousound.mp4" class="vowel-video" playsinline></video>
+    <p class="vowel-desc">Round your lips slightly, raise your tongue high and forward, and glide smoothly into the long /juː/ This is a long voiced sound starting as a Ju: and finish as a u:"</p>
   </div>
 
+  <!-- /uː/ -->
   <div class="vowel-block">
-    <h3>/uː/ — long “oo” sound (like <i>oops</i>)</h3>
-    <video src="oops.mp4" class="vowel-video" autoplay muted loop playsinline></video>
-    <p class="vowel-desc">The tongue is high and back, and the lips are rounded and pushed forward. The sound is voiced and continuous.</p>
+    <h3>/uː/ — long “oo” sound (oops, uber, ooze)</h3>
+    <video src="oops.mp4" class="vowel-video" playsinline></video>
+    <p class="vowel-desc">Lips rounded, tongue high and back, voiced.</p>
   </div>
 
+  <!-- /ʌ/ -->
   <div class="vowel-block">
-    <h3>/ʌ/ — short “uh” sound (like <i>uncle</i>)</h3>
-    <video src="ahsound.mp4" class="vowel-video" autoplay muted loop playsinline></video>
-    <p class="vowel-desc">The tongue is in a relaxed mid-central position, lips are neutral, and the jaw is slightly open. The sound is short and natural.</p>
+    <h3>/ʌ/ — “uh” sound (uncle, under, update)</h3>
+    <video src="ahsound.mp4" class="vowel-video" playsinline></video>
+    <p class="vowel-desc">Relaxed tongue, neutral lips, natural short sound.</p>
   </div>
 
+  <!-- /ɜː/ -->
   <div class="vowel-block">
-    <h3>/ɜː/ — “er” sound (like <i>urgent</i>)</h3>
-    <video src="ursound.mp4" class="vowel-video" autoplay muted loop playsinline></video>
-    <p class="vowel-desc">The tongue is mid-central with lips slightly rounded, and the vocal cords vibrate to produce a long, controlled sound.</p>
+    <h3>/ɜː/ — “er” sound (urgent, urban, early)</h3>
+    <video src="ursound.mp4" class="vowel-video" playsinline></video>
+    <p class="vowel-desc">Tongue mid-central, slight lip rounding, long controlled vowel.</p>
   </div>
-
- 
 </section>
+
+<!-- ===== Navigation Buttons ===== -->
+<div class="links">
+  <a href="index.html" class="btn">🗂 Further Practice</a>
+  <a href="https://ieltspteaustralianexaminertutor.com/" class="btn">🏠 Home</a>
+</div>
+
+</main>
+
+<footer>
+  © Koala Spies Sydney · Modern English Australia · All Rights Reserved
+</footer>
+
+<script>
+/* =============================
+   ENABLE VIDEO PLAY WITH AUDIO
+   ============================= */
+
+document.querySelectorAll(".vowel-video").forEach(video => {
+  video.addEventListener("click", () => {
+
+    /* If video is muted or paused — restart WITH AUDIO */
+    if (video.muted || video.paused) {
+      video.muted = false;
+      video.currentTime = 0;
+      video.play();
+      return;
+    }
+
+    /* If playing with audio — pause on second tap */
+    if (!video.paused) {
+      video.pause();
+    }
+  });
+});
+</script>
+
+</body>
+</html>
