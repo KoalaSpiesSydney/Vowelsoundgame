@@ -6,6 +6,9 @@
 <title>Sound Sorting Game – Modern English Australia</title>
 
 <style>
+/* ============================================================
+   BRAND + GLOBAL STYLES
+============================================================ */
 :root {
   --bg:#f2f5f6;
   --card:#1e1f21;
@@ -13,11 +16,15 @@
   --accent-light:#33bba6;
   --ink:#1c1e20;
   --ink-light:#f5f5f5;
+  --muted:#bbbbbb;
+  --line:#3a3a3a;
   --success:#20c997;
   --error:#e74c3c;
   --shadow:0 6px 24px rgba(0,0,0,.25);
   --radius:14px;
 }
+
+* { box-sizing:border-box; }
 
 body {
   margin:0;
@@ -27,265 +34,207 @@ body {
   display:flex;
   flex-direction:column;
   min-height:100vh;
+  line-height:1.6;
 }
 
-/* ===== Header ===== */
+/* ============================================================
+   HEADER
+============================================================ */
 header {
   background:var(--card);
   color:var(--accent);
   text-align:center;
-  padding:1.2rem 0;
-  font-size:1.5rem;
+  padding:1.5rem 0 1rem;
+  font-size:1.6rem;
   font-weight:bold;
-  letter-spacing:2px;
-  border-bottom:1px solid var(--line);
+  letter-spacing:1.5px;
 }
 header span {
-  color:#f5f5f5;
-  font-weight:300;
+  color:var(--ink-light);
   display:block;
+  font-weight:300;
   font-size:1rem;
+  margin-top:.25rem;
   letter-spacing:3px;
 }
 
-/* ===== Layout ===== */
+/* ============================================================
+   MAIN CONTAINER
+============================================================ */
 main {
   flex:1;
   width:100%;
   max-width:1200px;
   margin:0 auto;
-  padding:1rem 2rem 3rem;
+  padding:1rem 1rem 4rem;
 }
 
-.instructions {
-  margin:1.5rem auto;
-  max-width:900px;
-  line-height:1.6;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:1.5rem 2rem;
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
-.instructions h2 {
-  color:var(--accent);
-  text-align:center;
-  margin-top:0;
-}
-
-/* ===== Video Cards ===== */
-.vowel-block {
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:10px;
-  box-shadow:0 4px 16px rgba(0,0,0,0.1);
-  padding:1rem;
-  margin:1rem 0;
-}
-.vowel-block h3 {
-  margin-top:0;
-  color:var(--accent);
-}
-.vowel-video {
-  display:block;
-  width:5cm;
-  aspect-ratio:16 / 9;
-  max-width:240px;
-  margin:0.5rem auto;
-  border-radius:8px;
-  cursor:pointer;
-  background:#000;
-  transition:transform 0.25s ease;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-}
-.vowel-video:hover { transform:scale(1.05); }
-.vowel-desc {
-  font-size:0.95rem;
-  color:var(--muted);
-  text-align:center;
-  margin-top:0.5rem;
-}
-
-/* ===== Game ===== */
+/* ============================================================
+   VOWEL VIDEO GRID (Part 0)
+============================================================ */
 .game {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:1rem;
-  margin-top:2rem;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:2rem;
+  margin:2rem auto;
+  width:100%;
+  justify-items:center;
 }
+
 .column {
-  background:#fff;
-  border:2px solid var(--line);
+  background:white;
   border-radius:20px;
   padding:1rem;
+  width:100%;
+  max-width:260px;
+  box-shadow:0 4px 14px rgba(0,0,0,.15);
   text-align:center;
-  box-shadow:0 0 8px rgba(0,0,0,0.15);
-  transition:transform .25s ease;
 }
-.column:hover {
-  transform:scale(1.03);
-  box-shadow:0 0 16px rgba(255,122,26,0.25);
-}
+
 .column h3 {
   margin-top:0;
   color:var(--accent);
-  font-size:1.2rem;
-}
-.bin-word { margin:.3rem 0; border-radius:6px; padding:.3rem; font-size:1.1rem; }
-.green{color:var(--success);} .red{color:var(--error);}
-
-/* ===== Buttons & Footer ===== */
-button,.btn {
-  background:var(--accent);
-  color:#fff;
-  padding:.7rem 1.4rem;
-  border:none;
-  border-radius:45px;
-  cursor:pointer;
-  font-size:1rem;
-  text-decoration:none;
-  font-weight:600;
-  box-shadow:0 2px 6px rgba(0,0,0,0.25);
-  transition:all 0.25s ease;
-}
-button:hover,.btn:hover {
-  background:linear-gradient(90deg,var(--accent),#ff9b3d);
-  transform:translateY(-2px);
-}
-button:active,.btn:active { transform:translateY(0); }
-
-.links {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:1rem;
-  margin:3rem auto 1rem;
 }
 
-#feedback {
-  text-align:center;
-  height:1.5rem;
-  margin:1rem 0;
-  font-weight:bold;
-}
-
-footer {
-  border-top:1px solid var(--line);
-  color:var(--muted);
-  font-size:.9rem;
-  text-align:center;
-  background:var(--card);
-  padding:1rem;
-}
 .bucket-video {
-  display:block;
-  width:5cm;             /* ~5 cm wide */
+  width:100%;
+  max-width:180px;
   aspect-ratio:16/9;
-  max-width:120px;       /* responsive cap */
-  margin:0.6rem auto 0;
-  border-radius:8px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-  background:#000;
+  border-radius:10px;
+  margin:1rem auto;
   cursor:pointer;
-  transition:transform 0.25s ease;
-}
-.bucket-video:hover {
-  transform:scale(1.05);
-
-}
-.audio-questions {
-  counter-reset:item;
-  line-height:1.7;
-  padding-left:1.4rem;
+  box-shadow:0 2px 6px rgba(0,0,0,.3);
 }
 
-.audio-questions li {
-  margin:0.6rem 0 1rem;
-  font-size:1.05rem;
+/* ============================================================
+   SECTION WRAPPER
+============================================================ */
+.section-box {
+  background:white;
+  border-radius:20px;
+  padding:2rem;
+  max-width:800px;
+  margin:3rem auto;
+  box-shadow:0 3px 12px rgba(0,0,0,.15);
+  border:1px solid #ddd;
 }
 
-.audio-btn {
-  margin-left:0.6rem;
-  background:#ff7a1a;
-  color:white;
-  padding:0.45rem 1rem;
-  border:none;
-  border-radius:30px;
-  font-size:0.95rem;
-  cursor:pointer;
-  font-weight:600;
-  box-shadow:0 3px 6px rgba(0,0,0,0.2);
-  transition:0.25s ease;
-}
-
-.audio-btn:hover {
-  background:#ff9245;
-  transform:translateY(-2px);
-}
-.subheading {
-  margin-top:2rem;
-  font-size:1.4rem;
+.section-box h2 {
   color:var(--accent);
   text-align:center;
 }
 
-.write-questions {
-  counter-reset:item;
-  padding-left:1.4rem;
-  line-height:1.8;
+/* ============================================================
+   PART 1 – SPEAK OR TYPE
+============================================================ */
+#qa-list {
+  list-style:none;
+  padding:0;
+  margin:2rem auto;
+  max-width:650px;
 }
 
-.write-questions li {
-  margin-bottom:1.4rem;
+#qa-list li {
+  margin-bottom:2rem;
 }
 
 .answer-input {
   display:block;
   width:100%;
   max-width:350px;
-  padding:0.55rem 0.8rem;
-  margin-top:0.4rem;
+  padding:.55rem .8rem;
+  margin-top:.5rem;
   border-radius:8px;
   border:2px solid #ccc;
   font-size:1rem;
-  transition:0.25s ease;
 }
 
-.answer-input.correct {
-  border-color:var(--success);
-  background:#e8f9f0;
+.answer-input.correct { border-color:var(--success); background:#e8f9f0; }
+.answer-input.wrong   { border-color:var(--error);   background:#fdeaea; }
+
+.mic-btn,
+.submit-btn,
+.play-btn {
+  margin-top:.55rem;
+  padding:.5rem 1.1rem;
+  border:none;
+  border-radius:35px;
+  font-size:1rem;
+  cursor:pointer;
+  font-weight:600;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+  color:white;
 }
 
-.answer-input.wrong {
-  border-color:var(--error);
-  background:#fdeaea;
+.mic-btn    { background:var(--accent); }
+.submit-btn { background:var(--accent); }
+.play-btn   { background:#ff7a1a; }
+
+.play-btn[disabled] {
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+/* ============================================================
+   PART 2
+============================================================ */
+.write-questions {
+  list-style:none;
+  padding:0;
+  margin:2rem auto;
+  max-width:600px;
+}
+
+.write-questions li {
+  margin-bottom:1.6rem;
 }
 
 .mark-btn {
   display:block;
   margin:2rem auto;
-  padding:0.8rem 2rem;
+  padding:.8rem 2rem;
   font-size:1.1rem;
-  font-weight:700;
-  border-radius:40px;
   background:var(--accent);
   color:white;
-  cursor:pointer;
   border:none;
+  border-radius:40px;
+  cursor:pointer;
+  font-weight:700;
   box-shadow:0 4px 12px rgba(0,0,0,0.2);
 }
 
-#mark-feedback {
+/* ============================================================
+   FOOTER
+============================================================ */
+footer {
+  background:var(--card);
+  color:var(--ink-light);
+  border-top:1px solid var(--line);
   text-align:center;
-  font-size:1.2rem;
-  margin-top:1rem;
-  font-weight:bold;
+  padding:1.8rem .5rem;
+  letter-spacing:1px;
+  font-size:.9rem;
 }
 
-
-
+/* Buttons row */
+.links {
+  display:flex;
+  justify-content:center;
+  gap:1rem;
+  margin:3rem 0 1rem;
+}
+.btn {
+  background:#ff7a1a;
+  padding:.75rem 1.6rem;
+  color:white;
+  border-radius:40px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
 </style>
 </head>
+
 
 <body>
 <header>
@@ -293,240 +242,279 @@ footer {
   <span>4 ways to say "U" at the beginning of English words</span>
 </header>
 
+
 <main>
 
-
+<!-- ============================================================
+     PART 0 – VOWEL SOUND VIDEO CARDS
+============================================================ -->
 <div class="game">
-  <div class="column" id="ju">
+  <div class="column">
     <h3>/juː/ – “you”</h3>
-    <div class="list"></div>
     <video src="yousound.mp4" class="bucket-video" autoplay muted loop playsinline></video>
   </div>
 
-  <div class="column" id="oo">
+  <div class="column">
     <h3>/uː/ – “oo”</h3>
-    <div class="list"></div>
     <video src="oops.mp4" class="bucket-video" autoplay muted loop playsinline></video>
   </div>
 
-  <div class="column" id="uh">
+  <div class="column">
     <h3>/ʌ/ – “uh”</h3>
-    <div class="list"></div>
-    <video src="uhsound.mp4" class="bucket-video" autoplay muted loop playsinline></video>
+    <video src="ahsound.mp4" class="bucket-video" autoplay muted loop playsinline></video>
   </div>
 
-  <div class="column" id="er">
+  <div class="column">
     <h3>/ɜː/ – “er”</h3>
-    <div class="list"></div>
     <video src="ursound.mp4" class="bucket-video" autoplay muted loop playsinline></video>
   </div>
 </div>
 
 
-<!-- ===== PART 3 ===== -->
-<section class="instructions">
-  <h2> – Answer These Questions</h2>
-  <p>Short-answer questions in PTE test your listening and pronunciation.  
-     Respond using words from Part 1 and focus on producing the correct vowel sound.</p>
 
-<ol class="audio-questions">
+<!-- ============================================================
+     PART 1 – SPEAK OR TYPE (SUBMIT + HINT)
+============================================================ -->
+<div class="section-box">
+  <h2>PART 1 – Answer Short Questions (Speak or Type)</h2>
+  <p>Type your answer or tap 🎤 to speak. Submit each answer one by one. They all begin with 'u'.</p>
 
-  <li>
-    Which radioactive element has the symbol <b>U</b>?
-    <button class="audio-btn" data-audio="uranium.mp3">🔊 Play Answer</button>
-  </li>
+  <ol id="qa-list">
 
-  <li>
-    What is it called when a vehicle makes a 180-degree turn on the road?
-    <button class="audio-btn" data-audio="uturn.mp3">🔊 Play Answer</button>
-  </li>
+    <li data-answer="united states of america" data-audio="UnitedStatesofAmerica.mp3">
+      Name a country in North America:
+      <input class="answer-input" placeholder="Type or speak..." />
+      <button class="mic-btn">🎤</button>
+      <button class="submit-btn">Submit</button>
+      <button class="play-btn" disabled>🔊 Hint</button>
+    </li>
 
-  <li>
-    What term describes an imagined perfect society where everything is ideal?
-    <button class="audio-btn" data-audio="Utopia.mp3">🔊 Play Answer</button>
-  </li>
+    <li data-answer="ubiquitous" data-audio="ubiquitous.mp3">
+      What is a word for something that is everywhere in society?
+      <input class="answer-input" placeholder="Type or speak..." />
+      <button class="mic-btn">🎤</button>
+      <button class="submit-btn">Submit</button>
+      <button class="play-btn" disabled>🔊 Hint</button>
+    </li>
 
-  <li>Name a country in Africa:
-    <button class="audio-btn" data-audio="Uganda.mp3">🔊 Play Answer</button>
-  </li>
+    <li data-answer="unilateral" data-audio="unilateral.mp3">
+      What is an equal agreement between countries?
+      <input class="answer-input" placeholder="Type or speak..." />
+      <button class="mic-btn">🎤</button>
+      <button class="submit-btn">Submit</button>
+      <button class="play-btn" disabled>🔊 Hint</button>
+    </li>
 
-  <li>Name a country in Eastern Europe:
-    <button class="audio-btn" data-audio="Ukraine.mp3">🔊 Play Answer</button>
-  </li>
+    <li data-answer="uncle" data-audio="uncle.mp3">
+      What do you call your father's brother?
+      <input class="answer-input" placeholder="Type or speak..." />
+      <button class="mic-btn">🎤</button>
+      <button class="submit-btn">Submit</button>
+      <button class="play-btn" disabled>🔊 Hint</button>
+    </li>
 
-  <li>Name a country in Central Asia:
-    <button class="audio-btn" data-audio="Uzbekistan.mp3">🔊 Play Answer</button>
-  </li>
+    <li data-answer="oops" data-audio="oops.mp3">
+      What did Britney Spears say before she “did it again”?
+      <input class="answer-input" placeholder="Type or speak..." />
+      <button class="mic-btn">🎤</button>
+      <button class="submit-btn">Submit</button>
+      <button class="play-btn" disabled>🔊 Hint</button>
+    </li>
 
-  <li>Name a country in the Middle East:
-    <button class="audio-btn" data-audio="UnitedArabEmirates.mp3">🔊 Play Answer</button>
-  </li>
-
-  <li>Name a country in North America:
-    <button class="audio-btn" data-audio="UnitedStatesofAmerica.mp3">🔊 Play Answer</button>
-  </li>
-
-  <li>What is a word for something that is everywhere in society?
-    <button class="audio-btn" data-audio="ubiquitous.mp3">🔊 Play Answer</button>
-  </li>
-
-  <li>What is an equal agreement between countries?
-    <button class="audio-btn" data-audio="unilateral.mp3">🔊 Play Answer</button>
-  </li>
-
-  <li>What do you call your father's brother?
-    <button class="audio-btn" data-audio="uncle.mp3">🔊 Play Answer</button>
-  </li>
-
-  <li>What did Britney Speares say before she 'did it again'?
-    <button class="audio-btn" data-audio="oops.mp3">🔊 Play Answer</button>
-  </li>
-<h2 class="subheading">Part 2 — Listen and Write the Answer</h2>
-<p>Click the audio for each question and type your answer in the box. When finished, click <b>Mark Answers</b>.</p>
-
-<ol class="write-questions">
-
-  <li>
-    <button class="audio-btn" data-audio="Wcity.mp3">🔊 Play Question</button>
-    <input type="text" class="answer-input" data-answer="urbanization" placeholder="Type your answer...">
-  </li>
-
-  <li>
-    <button class="audio-btn" data-audio="Woppositeuseless.mp3">🔊 Play Question</button>
-    <input type="text" class="answer-input" data-answer="useful" placeholder="Type your answer...">
-  </li>
-
-  <li>
-    <button class="audio-btn" data-audio="Wmyth.mp3">🔊 Play Answer</button>
-    <input type="text" class="answer-input" data-answer="unicorn" placeholder="Type your answer...">
-  </li>
-
-  <li>
-    <button class="audio-btn" data-audio="Wgroupworkers.mp3">🔊 Play Answer</button>
-    <input type="text" class="answer-input" data-answer="union" placeholder="Type your answer...">
-  </li>
-
-  <li>
-    <button class="audio-btn" data-audio="Woppositeover.mp3">🔊 Play Answer</button>
-    <input type="text" class="answer-input" data-answer="under" placeholder="Type your answer...">
-  </li>
-
-</ol>
-
-<button id="mark-btn" class="mark-btn">✔ Mark Answers</button>
-
-<div id="mark-feedback"></div>
-
-</ol>
-
-</section>
-
-<!-- ===== Buttons ===== -->
-<div class="links">
-  <button id="reset">🔁 Try Again</button>
-  <a href="Moneyidioms.html" class="btn">⬅ Back to Matching Game</a>
+  </ol>
 </div>
+
+
+
+<!-- ============================================================
+     PART 2 — LISTEN AND WRITE
+============================================================ -->
+<div class="section-box">
+  <h2>PART 2 – Listen and Type the Answer</h2>
+  <p>The answer is one word and begins with 'u'.</p>
+
+  <ol class="write-questions">
+    <li>
+      <button class="audio-btn" data-audio="Wcity.mp3">🔊 Play Hint</button>
+      <input class="answer-input" data-answer="urbanization" placeholder="Type your answer...">
+    </li>
+
+    <li>
+      <button class="audio-btn" data-audio="Woppositeuseless.mp3">🔊 Play Hint</button>
+      <input class="answer-input" data-answer="useful" placeholder="Type your answer...">
+    </li>
+
+    <li>
+      <button class="audio-btn" data-audio="Wmyth.mp3">🔊 Play Hint</button>
+      <input class="answer-input" data-answer="unicorn" placeholder="Type your answer...">
+    </li>
+
+    <li>
+      <button class="audio-btn" data-audio="Wgroupworkers.mp3">🔊 Play Hint</button>
+      <input class="answer-input" data-answer="union" placeholder="Type your answer...">
+    </li>
+
+    <li>
+      <button class="audio-btn" data-audio="Woppositeover.mp3">🔊 Play Hint</button>
+      <input class="answer-input" data-answer="under" placeholder="Type your answer...">
+    </li>
+  </ol>
+
+  <button id="mark-btn2" class="mark-btn">✔ Mark Answers</button>
+  <div id="mark-feedback2" style="text-align:center;font-weight:bold;margin-top:1rem;"></div>
+</div>
+
+
+<!-- ============================================================
+     LINKS + FOOTER
+============================================================ -->
+<div class="links">
+  <button id="reset" class="btn" style="background:var(--accent);">🔁 Try Again</button>
+  <a href="Moneyidioms.html" class="btn">⬅ Back to Matching Game</a>
+    <a href="https://ieltspteaustralianexaminertutor.com/" class="btn">🏠 Home</a>
+</div>
+
 </main>
+
 
 <footer>
   © Koala Spies Sydney · Modern English Australia · All Rights Reserved
 </footer>
 
-c<!-- ===== JS: Game + Video Audio ===== -->
-
-/*<script>
-
+<!-- ============================================================
+     FULL JAVASCRIPT
+============================================================ -->
+<script>
 /* ============================================================
-   PART 1 – PLAY AUDIO FOR SOUND BUTTONS
+   PLAY DEFAULT AUDIO BUTTONS (Part 2 etc.)
 ============================================================ */
 document.querySelectorAll(".audio-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    const file = btn.dataset.audio;
-    if (!file) return;
-    const audio = new Audio(file);
-    audio.play().catch(err => console.log("Audio error:", err));
+    new Audio(btn.dataset.audio).play();
   });
 });
 
-
 /* ============================================================
-   PART 2 – MARK THE WRITE-IN ANSWERS
+   PART 1 – SUBMIT + HINT AUDIO
 ============================================================ */
-document.getElementById("mark-btn").addEventListener("click", () => {
-  let correctCount = 0;
-  const inputs = document.querySelectorAll(".answer-input");
+document.querySelectorAll("#qa-list li").forEach(li => {
+  const input   = li.querySelector(".answer-input");
+  const submit  = li.querySelector(".submit-btn");
+  const hintBtn = li.querySelector(".play-btn");
+  const correct = li.dataset.answer.toLowerCase().trim();
+  const hint    = li.dataset.audio;
 
-  inputs.forEach(input => {
-    const correct = input.dataset.answer.trim().toLowerCase();
+  submit.addEventListener("click", () => {
     const user = input.value.trim().toLowerCase();
 
     if (user === correct) {
       input.classList.add("correct");
       input.classList.remove("wrong");
-      correctCount++;
+      hintBtn.disabled = true;
+      submit.disabled = true;
+      submit.textContent = "✔ Correct";
+      submit.style.background = "var(--success)";
     } else {
       input.classList.add("wrong");
       input.classList.remove("correct");
+      new Audio(hint).play();  // auto hint
+      hintBtn.disabled = false;
     }
   });
-
-  document.getElementById("mark-feedback").textContent =
-    `You got ${correctCount} / ${inputs.length} correct.`;
 });
 
-
 /* ============================================================
-   PART 3 – BUCKET VIDEOS: PLAY ONCE, STOP OTHERS
+   MIC SPEECH TO TEXT
 ============================================================ */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-const bucketVideos = document.querySelectorAll(".bucket-video");
-let currentPlaying = null;
-
-bucketVideos.forEach(video => {
-
-  // Stop default autoplay/loop/mute
-  video.autoplay = false;
-  video.loop = false;
-
-  video.addEventListener("click", () => {
-
-    // If another video is playing → stop it
-    if (currentPlaying && currentPlaying !== video) {
-      currentPlaying.pause();
-      currentPlaying.currentTime = 0;
-      currentPlaying.muted = true;
-      currentPlaying = null;
-    }
-
-    // If THIS video is already playing → stop it
-    if (!video.paused) {
-      video.pause();
-      video.currentTime = 0;
-      video.muted = true;
-      currentPlaying = null;
+document.querySelectorAll(".mic-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (!SR) {
+      alert("Speech recognition not supported on this browser.");
       return;
     }
 
-    // Otherwise → play once with audio
-    video.muted = false;
-    video.currentTime = 0;
-    video.play();
-    currentPlaying = video;
+    const field = btn.closest("li").querySelector(".answer-input");
+    const rec = new SR();
+    rec.lang = "en-US";
+    rec.start();
 
-    // When finished → reset frame and mute
-    video.onended = () => {
-      video.pause();
-      video.currentTime = 0;
-      video.muted = true;
-
-      if (currentPlaying === video) {
-        currentPlaying = null;
-      }
+    rec.onresult = e => {
+      field.value = e.results[0][0].transcript;
     };
-
   });
 });
 
+/* ============================================================
+   PLAY HINT BUTTON (Part 1)
+============================================================ */
+document.querySelectorAll(".play-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (!btn.disabled) {
+      new Audio(btn.closest("li").dataset.audio).play();
+    }
+  });
+});
+
+/* ============================================================
+   PART 2 – MARKING
+============================================================ */
+document.getElementById("mark-btn2").addEventListener("click", () => {
+  let correct = 0;
+  const fields = document.querySelectorAll(".write-questions .answer-input");
+
+  fields.forEach(f => {
+    if (f.value.trim().toLowerCase() === f.dataset.answer) {
+      f.classList.add("correct");
+      f.classList.remove("wrong");
+      correct++;
+    } else {
+      f.classList.add("wrong");
+      f.classList.remove("correct");
+    }
+  });
+
+  document.getElementById("mark-feedback2").textContent =
+    `You got ${correct} / ${fields.length}`;
+});
+
+/* ============================================================
+   VIDEO BUCKETS
+============================================================ */
+const videos = document.querySelectorAll(".bucket-video");
+let activeVideo = null;
+
+videos.forEach(v => {
+  v.addEventListener("click", () => {
+
+    if (activeVideo && activeVideo !== v) {
+      activeVideo.pause();
+      activeVideo.currentTime = 0;
+      activeVideo.muted = true;
+    }
+
+    if (!v.paused) {
+      v.pause();
+      v.currentTime = 0;
+      v.muted = true;
+      activeVideo = null;
+      return;
+    }
+
+    v.muted = false;
+    v.currentTime = 0;
+    v.play();
+    activeVideo = v;
+
+    v.onended = () => {
+      v.muted = true;
+      v.currentTime = 0;
+      activeVideo = null;
+    };
+  });
+});
 </script>
+
 </body>
 </html>
