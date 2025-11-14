@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sound Sorting Game – Modern English Australia</title>
+
+<style>
+:root {
+  --bg:#f2f5f6;
+  --card:#1e1f21;
+  --accent:#009688;
+  --accent-light:#33bba6;
+  --ink:#1c1e20;
+  --ink-light:#f5f5f5;
+  --success:#20c997;
+  --error:#e74c3c;
+  --shadow:0 6px 24px rgba(0,0,0,.25);
+  --radius:14px;
+  --line:#3a3a3a;
+  --muted:#bbbbbb;
+}
+
+/* ===== Base ===== */
+body {
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+/* ===== Header ===== */
+header {
+  background:var(--card);
+  color:var(--accent);
+  text-align:center;
+  padding:1.2rem 0;
+  font-size:1.5rem;
+  font-weight:bold;
+  letter-spacing:2px;
+  border-bottom:1px solid var(--line);
+}
+header span {
+  color:#f5f5f5;
+  font-weight:300;
+  display:block;
+  font-size:1rem;
+  letter-spacing:3px;
+}
+
+/* ===== Main Layout ===== */
+main {
+  flex:1;
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  padding:1rem 2rem 3rem;
+}
+
+/* ===== Instructions Section ===== */
+.instructions {
+  margin:1.5rem auto;
+  max-width:900px;
+  line-height:1.6;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:1.5rem 2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.instructions h2 {
+  color:var(--accent);
+  text-align:center;
+  margin-top:0;
+}
+
+/* ===== Video Blocks ===== */
+.vowel-block {
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
+  padding:1rem;
+  margin:1rem 0;
+}
+.vowel-block h3 {
+  margin-top:0;
+  color:var(--accent);
+}
+
+.vowel-video {
+  display:block;
+  width:100%;
+  max-width:260px;
+  aspect-ratio:16/9;
+  margin:0.6rem auto 0;
+  border-radius:10px;
+  cursor:pointer;
+  background:#000;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  transition:transform .25s ease;
+}
+.vowel-video:hover {
+  transform:scale(1.05);
+}
+
+.vowel-desc {
+  text-align:center;
+  color:var(--muted);
+  margin-top:0.5rem;
+  font-size:0.95rem;
+}
+
+/* ===== Navigation Buttons ===== */
+.links {
+  display:flex;
+  justify-content:center;
+  gap:1rem;
+  margin:2.5rem 0 1rem;
+}
+
+.btn {
+  background:var(--accent);
+  color:#fff;
+  padding:.75rem 1.6rem;
+  border-radius:40px;
+  font-weight:bold;
+  text-decoration:none;
+  font-size:1rem;
+  box-shadow:0 3px 10px rgba(0,0,0,0.2);
+  transition:all .25s ease;
+}
+.btn:hover {
+  background:var(--accent-light);
+  transform:translateY(-2px);
+}
+
+/* ===== Footer ===== */
+footer {
+  margin-top:auto;
+  text-align:center;
+  background:var(--card);
+  color:var(--ink-light);
+  padding:1.2rem;
+  font-size:0.9rem;
+  border-top:1px solid var(--line);
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  MODERN ENGLISH AUSTRALIA
+  <span>4 Sounds of U</span>
+</header>
+
+<main>
+
+<!-- ===== PART 1: VIDEO HINTS ===== -->
+<section class="instructions">
+  <h2>HINT — The 4 Sounds of U</h2>
+  <p><strong>Lesson:</strong> Listening and speaking are connected. To make the sound you need to notice how your mouth, lips, tongue, and jaw move. Click the short videos below to hear each sound clearly.</p>
+
+  <!-- /juː/ -->
+  <div class="vowel-block">
+    <h3>/juː/ — “you” sound (unit, use, university)</h3>
+    <video src="yousound.mp4" class="vowel-video" playsinline></video>
+    <p class="vowel-desc">Round your lips slightly, raise your tongue high and forward, and glide smoothly into the long /juː/ This is a long voiced sound starting as a Ju: and finish as a u:"</p>
+  </div>
+
+  <!-- /uː/ -->
+  <div class="vowel-block">
+    <h3>/uː/ — long “oo” sound (oops, uber, ooze)</h3>
+    <video src="oops.mp4" class="vowel-video" playsinline></video>
+    <p class="vowel-desc">Lips rounded, tongue high and back, voiced.</p>
+  </div>
+
+  <!-- /ʌ/ -->
+  <div class="vowel-block">
+    <h3>/ʌ/ — “uh” sound (uncle, under, update)</h3>
+    <video src="ahsound.mp4" class="vowel-video" playsinline></video>
+    <p class="vowel-desc">Relaxed tongue, neutral lips, natural short sound.</p>
+  </div>
+
+  <!-- /ɜː/ -->
+  <div class="vowel-block">
+    <h3>/ɜː/ — “er” sound (urgent, urban, early)</h3>
+    <video src="ursound.mp4" class="vowel-video" playsinline></video>
+    <p class="vowel-desc">Tongue mid-central, slight lip rounding, long controlled vowel.</p>
+  </div>
+</section>
+
+<!-- ===== Navigation Buttons ===== -->
+<div class="links">
+  <a href="index.html" class="btn">🗂 Further Practice</a>
+  <a href="https://ieltspteaustralianexaminertutor.com/" class="btn">🏠 Home</a>
+</div>
+
+</main>
+
+<footer>
+  © Koala Spies Sydney · Modern English Australia · All Rights Reserved
+</footer>
+
+<script>
+/* =============================
+   ENABLE VIDEO PLAY WITH AUDIO
+   ============================= */
+
+document.querySelectorAll(".vowel-video").forEach(video => {
+  video.addEventListener("click", () => {
+
+    /* If video is muted or paused — restart WITH AUDIO */
+    if (video.muted || video.paused) {
+      video.muted = false;
+      video.currentTime = 0;
+      video.play();
+      return;
+    }
+
+    /* If playing with audio — pause on second tap */
+    if (!video.paused) {
+      video.pause();
+    }
+  });
+});
+</script>
+
+</body>
+</html>
