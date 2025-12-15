@@ -317,7 +317,6 @@ footer {
       What did Britney Spears say before she “did it again”?
       <input class="answer-input" placeholder="Type or speak..." />
       <button class="mic-btn">🎤</button>
-      <button class="submit-btn">Submit</button>
       <button class="play-btn" disabled>🔊 Hint</button>
     </li>
 
@@ -335,17 +334,17 @@ footer {
 
   <ol class="write-questions">
     <li>
-      <button class="audio-btn" data-audio="Wcity.mp3">
+      <button class="audio-btn" data-audio="Wcity.mp3">🔊 Play Hint</button>
       <input class="answer-input" data-answer="urbanization" placeholder="Type your answer...">
     </li>
 
     <li>
-      <button class="audio-btn" data-audio="Woppositeuseless.mp3">
+      <button class="audio-btn" data-audio="Woppositeuseless.mp3">🔊 Play Hint</button>
       <input class="answer-input" data-answer="useful" placeholder="Type your answer...">
     </li>
 
     <li>
-      <button class="audio-btn" data-audio="Wmyth.mp3"></button>
+      <button class="audio-btn" data-audio="Wmyth.mp3">🔊 Play Hint</button>
       <input class="answer-input" data-answer="unicorn" placeholder="Type your answer...">
     </li>
 
@@ -400,7 +399,6 @@ document.querySelectorAll(".audio-btn").forEach(btn => {
 ============================================================ */
 document.querySelectorAll("#qa-list li").forEach(li => {
   const input   = li.querySelector(".answer-input");
-  const submit  = li.querySelector(".submit-btn");
   const hintBtn = li.querySelector(".play-btn");
   const correct = li.dataset.answer.toLowerCase().trim();
   const hint    = li.dataset.audio;
@@ -519,6 +517,7 @@ videos.forEach(v => {
 
 </body>
 </html>
+
 
 
 
