@@ -372,6 +372,68 @@ footer{
     grid-template-columns:repeat(4,minmax(0,1fr));
   }
 }
+  /* =========================
+   Cross-device hardening
+   (iPhone / Android / tablets / desktop)
+   ========================= */
+
+/* Prevent tiny horizontal scroll on iOS caused by transforms/absolute elements */
+html, body { overflow-x: hidden; }
+
+/* iPhone notch / safe area padding */
+body{
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Images/videos never overflow */
+video, canvas, img { max-width: 100%; height: auto; }
+
+/* Avoid hover “sticking” on touch devices */
+@media (hover: none){
+  #central:hover,
+  .sound-btn:hover,
+  button:hover,
+  .btn:hover{
+    transform:none;
+    background:inherit;
+    color:inherit;
+    border-color:inherit;
+    box-shadow: var(--shadow);
+  }
+}
+
+/* iOS tap highlight removal (the grey/purple flash) */
+a, button, #central, .sound-btn{
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* If you ever get odd “selection highlight” blocks on iOS */
+#central, .sound-btn, button, .btn{
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Make the game-zone never exceed viewport width, even with transforms */
+#game-zone{ max-width: min(580px, 92vw); }
+
+/* Keep the side buttons inside the screen on small phones */
+@media (max-width: 420px){
+  #btn-oo{ right: 2%; transform: translate(0,-50%); }
+  #btn-er{ left: 2%;  transform: translate(0,-50%); }
+  #btn-ju{ top: 2%;   transform: translate(-50%,0); }
+  #btn-uh{ bottom: 2%; transform: translate(-50%,0); }
+}
+
+/* Respect “reduce motion” accessibility */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+.sound-btn.pulsing{
+  outline: 3px solid rgba(255,122,26,0.35);
+  outline-offset: 4px;
+}
+
 </style>
 </head>
 
@@ -564,7 +626,8 @@ soundBtns.forEach(btn=>{
       vid.play();
       vid.onended=()=>{
         vid.style.display="none";
-        label.style.display="flex";
+        label.style.display="block";
+
       };
     }
   });
@@ -610,6 +673,7 @@ document.getElementById("reset").addEventListener("click",()=>{
 
 </body>
 </html>
+
 
 
 
