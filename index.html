@@ -1,684 +1,441 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sound Sorting – The Four “U” Sounds | Modern English Australia</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Sound Sorting Game – Modern English Australia</title>
 
-<style>
-:root{
-  --bg:#f5f5f5;
-  --card:#2a2a2a;
-  --ink:#1e1e1e;
-  --muted:#bbbbbb;
-  --accent:#ff7a1a;
-  --line:#3a3a3a;
-  --ok:#1db954;
-  --err:#e74c3c;
+  <style>
+    :root {
+      --bg:#f2f5f6;
+      --card:#1e1f21;
+      --accent:#009688;
+      --accent-light:#33bba6;
+      --ink:#1c1e20;
+      --ink-light:#f5f5f5;
+      --success:#20c997;
+      --error:#e74c3c;
+      --shadow:0 6px 24px rgba(0,0,0,.25);
+      --radius:14px;
+      --line:rgba(0,0,0,.12);
+      --muted:#6b737a;
+    }
 
-  /* extra helpers */
-  --shadow:0 6px 24px rgba(0,0,0,0.25);
-  --radius:14px;
+    * { box-sizing:border-box; }
+    html, body { height:100%; }
+    body {
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      -webkit-text-size-adjust:100%;
+      text-rendering:optimizeLegibility;
+    }
 
-  /* circle + tag colours – charcoal + blues + one teal */
-  --ju-color:#2563eb;   /* blue */
-  --oo-color:#0f172a;   /* deep charcoal-blue */
-  --uh-color:#0f766e;   /* teal (one extra) */
-  --er-color:#3b82f6;   /* lighter blue */
-}
+    /* ===== Header (sticky) ===== */
+    header {
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:var(--card);
+      color:var(--accent);
+      text-align:center;
+      padding:1.05rem 1rem;
+      font-size:1.35rem;
+      font-weight:800;
+      letter-spacing:2px;
+      border-bottom:1px solid var(--line);
+    }
+    header span {
+      color:var(--ink-light);
+      font-weight:300;
+      display:block;
+      font-size:0.95rem;
+      letter-spacing:3px;
+      margin-top:0.35rem;
+    }
 
-/* map feedback vars so JS styles still work */
-:root{
-  --success:var(--ok);
-  --error:var(--err);
-}
+    @media (min-width: 768px){
+      header { font-size:1.5rem; padding:1.2rem 1rem; }
+      header span { font-size:1rem; }
+    }
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+    /* ===== Sticky QR (top-left in header) ===== */
+    .qr-wrap{
+      position:absolute;
+      left:10px;
+      top:10px;
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      z-index:60;
+    }
 
-/* ===== BASE ===== */
-body{
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--ink);
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-  line-height:1.75;
-}
+    .qr-btn{
+      background:rgba(20, 1, 1, 0.1);
+      color:var(--ink-light);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:10px;
+      padding:0.5rem 0.8rem;
+      font-weight:800;
+      font-size:0.9rem;
+      cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,.25);
+      transition:transform .2s ease, background .2s ease, border-color .2s ease;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      line-height:1;
+      white-space:nowrap;
+    }
+    @media (hover:hover) and (pointer:fine){
+      .qr-btn:hover{
+        background:rgba(255,255,255,.16);
+        border-color:rgba(255,255,255,.28);
+        transform:translateY(-1px);
+      }
+    }
+    .qr-btn:active{ transform:translateY(0); }
+    .qr-btn:focus-visible{
+      outline:none;
+      box-shadow:0 0 0 3px rgba(0,150,136,0.22), 0 2px 8px rgba(0,0,0,.25);
+    }
 
-/* ===== Header (brand-consistent) ===== */
-header{
-  background:var(--card);
-  color:var(--accent);
-  text-align:center;
-  padding:1.2rem 0;
-  font-size:1.5rem;
-  font-weight:bold;
-  letter-spacing:2px;
-  border-bottom:1px solid var(--line);
-}
-header span{
-  color:#f5f5f5;
-  font-weight:300;
-  display:block;
-  font-size:1rem;
-  letter-spacing:3px;
-}
+    .qr-panel{
+      display:none;
+      background:rgba(30,31,33,.98);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:14px;
+      padding:10px;
+      box-shadow:0 10px 26px rgba(0,0,0,.35);
+      width:160px;
+    }
+    .qr-panel.open{ display:block; }
 
-/* ===== MAIN LAYOUT (mobile-first) ===== */
-main{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:1.25rem 1rem 2.25rem;
-  text-align:center;
-}
+    .qr-title{
+      color:var(--ink-light);
+      font-size:0.8rem;
+      font-weight:700;
+      text-align:center;
+      margin:0 0 8px;
+      opacity:.9;
+      letter-spacing:.2px;
+    }
+    #qrcode{
+      width:140px;
+      height:140px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#fff;
+      border-radius:10px;
+      overflow:hidden;
+    }
 
-p{
-  margin:0 0 .75rem;
-}
+    /* Keep header text from colliding with QR on tiny screens */
+    @media (max-width: 420px){
+      header{ padding-left:72px; padding-right:12px; }
+      .qr-wrap{ left:8px; top:8px; }
+      .qr-panel{ width:150px; }
+      #qrcode{ width:132px; height:132px; }
+    }
 
-/* Lesson link */
-.lesson-link{
-  margin:.75rem 0 1rem;
-  font-size:1rem;
-}
-.lesson-link a{
-  color:var(--ink);
-  font-weight:600;
-  text-decoration-thickness:1px;
-  text-underline-offset:3px;
-}
-.lesson-link a:hover{
-  color:var(--accent);
-}
+    /* ===== Main Layout ===== */
+    main {
+      flex:1;
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:1rem 1rem 2.25rem;
+    }
+    @media (min-width: 768px){
+      main { padding:1rem 2rem 3rem; }
+    }
 
-/* Instruction cards – dark card style */
-.instructions{
-  width:100%;
-  max-width:600px;
-  background:var(--card);
-  color:#f5f5f5;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:.9rem 1.1rem 1.1rem;
-  margin-bottom:1rem;
-  text-align:left;
-}
-.instructions h2{
-  margin:0 0 .4rem;
-  font-size:1.1rem;
-  color:var(--accent);
-}
-.instructions p{
-  margin-bottom:.4rem;
-}
+    /* ===== Instructions Section ===== */
+    .instructions {
+      margin:1.25rem auto;
+      max-width:900px;
+      line-height:1.6;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:1.25rem 1.25rem;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+    @media (min-width: 768px){
+      .instructions { padding:1.5rem 2rem; }
+    }
 
-/* ===== GAME ZONE (mobile-first) ===== */
-#game-zone{
-  position:relative;
-  width:100%;
-  max-width:420px;
-  aspect-ratio:1 / 1.1;
-  margin:1.25rem auto 1.75rem;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+    .instructions h2 {
+      color:var(--accent);
+      text-align:center;
+      margin:0 0 0.75rem;
+    }
+    .instructions p { margin:0.75rem 0; }
 
-/* Central bubble */
-#central{
-  width:clamp(140px,48vw,190px);
-  height:clamp(140px,48vw,190px);
-  border-radius:50%;
-  background:#ffffff;
-  border:2px solid var(--accent);
-  color:var(--ink);
-  font-size:1.1rem;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  user-select:none;
-  box-shadow:var(--shadow);
-  padding:.5rem;
-  text-align:center;
-  line-height:1.3;
-  transition:transform .25s,box-shadow .25s,background .25s,border-color .25s;
-}
-#central:hover{
-  transform:scale(1.03);
-  background:#ffe4c2;
-}
+    /* ===== Video Blocks ===== */
+    .vowel-block {
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      box-shadow:0 4px 16px rgba(0,0,0,0.1);
+      padding:1rem;
+      margin:1rem 0;
+    }
+    .vowel-block h3 {
+      margin:0 0 0.5rem;
+      color:var(--accent);
+      font-size:1.1rem;
+      line-height:1.35;
+    }
 
-/* Sound circles */
-.sound-btn{
-  position:absolute;
-  width:clamp(110px,32vw,140px);
-  height:clamp(110px,32vw,140px);
-  border-radius:50%;
-  background:#ffffff;
-  border:2px solid var(--accent);
-  color:var(--ink);
-  font-weight:600;
-  font-size:.9rem;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:var(--shadow);
-  cursor:pointer;
-  padding:.6rem;
-  text-align:center;
-  transition:transform .25s,background .25s,color .25s,border-color .25s;
-  overflow:hidden;
-}
+    .vowel-video {
+      display:block;
+      width:100%;
+      max-width:320px;
+      aspect-ratio:16/9;
+      margin:0.6rem auto 0;
+      border-radius:10px;
+      cursor:pointer;
+      background:#000;
+      box-shadow:0 2px 8px rgba(0,0,0,0.2);
+      transition:transform .25s ease;
+      outline:none;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+    }
 
-/* Positions tuned for phones */
-#btn-ju{top:4%;left:50%;transform:translate(-50%,0);}
-#btn-oo{top:50%;right:0;transform:translate(10%,-50%);}
-#btn-uh{bottom:0;left:50%;transform:translate(-50%,-10%);}
-#btn-er{top:50%;left:0;transform:translate(-10%,-50%);}
+    @media (hover:hover) and (pointer:fine){
+      .vowel-video:hover { transform:scale(1.05); }
+    }
 
-/* Circle colours */
-#btn-ju{border-color:var(--ju-color);}
-#btn-oo{border-color:var(--oo-color);}
-#btn-uh{border-color:var(--uh-color);}
-#btn-er{border-color:var(--er-color);}
+    .vowel-desc {
+      text-align:center;
+      color:var(--muted);
+      margin:0.6rem auto 0;
+      font-size:0.95rem;
+      max-width:70ch;
+    }
 
-#btn-ju span{color:var(--ju-color);}
-#btn-oo span{color:var(--oo-color);}
-#btn-uh span{color:var(--uh-color);}
-#btn-er span{color:var(--er-color);}
+    .vowel-video:focus-visible {
+      outline:none;
+      box-shadow:0 0 0 3px rgba(0,150,136,0.22), 0 2px 8px rgba(0,0,0,0.2);
+    }
 
-/* Hover */
-.sound-btn:hover{
-  transform:scale(1.03);
-  background:#f5f5f5;
-}
+    /* ===== Navigation Buttons ===== */
+    .links {
+      display:flex;
+      justify-content:center;
+      gap:0.9rem;
+      margin:2rem 0 0.75rem;
+      flex-wrap:wrap;
+    }
 
-/* Correct / wrong feedback */
-.sound-btn.correct{
-  background:#e6f9ee;
-  border-color:var(--ok);
-}
-.sound-btn.wrong{
-  background:#fde2e2;
-  border-color:var(--err);
-}
+    .btn {
+      display:inline-block;
+      background:var(--accent);
+      color:#fff;
+      padding:0.8rem 1.5rem;
+      border-radius:10px;
+      font-weight:800;
+      text-decoration:none;
+      font-size:1rem;
+      box-shadow:0 3px 10px rgba(0,0,0,0.2);
+      transition:transform .2s ease, background .2s ease;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+    }
 
-/* Hint video */
-.hint-video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:50%;
-  display:none;
-}
+    @media (hover:hover) and (pointer:fine){
+      .btn:hover {
+        background:var(--accent-light);
+        transform:translateY(-2px);
+      }
+    }
 
-/* ===== FEEDBACK & CONTROLS ===== */
-#feedback{
-  font-weight:700;
-  height:1.6rem;
-  margin:.5rem 0 1.1rem;
-}
+    /* ===== Footer ===== */
+    footer {
+      margin-top:auto;
+      text-align:center;
+      background:var(--card);
+      color:var(--ink-light);
+      padding:1.1rem 1rem;
+      font-size:0.9rem;
+      border-top:1px solid var(--line);
+    }
 
-/* Controls wrapper */
-#controls{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:.75rem;
-  margin:1rem 0 1.75rem;
-}
-
-/* Reset button – light, neutral */
-button{
-  background:#ffffff;
-  color:var(--ink);
-  border:1px solid var(--ink);
-  padding:.55rem 1.3rem;
-  border-radius:999px;
-  font-size:.95rem;
-  font-weight:600;
-  cursor:pointer;
-  box-shadow:var(--shadow);
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  gap:.25rem;
-  transition:background .2s,transform .2s,box-shadow .2s,color .2s,border-color .2s;
-}
-button:hover{
-  background:#e5e7eb;
-  transform:translateY(-1px);
-}
-
-/* Nav buttons – black with orange accent hover */
-.btn{
-  background:#000000;
-  color:#f5f5f5;
-  border:1px solid #000000;
-  padding:.55rem 1.3rem;
-  border-radius:999px;
-  font-size:.95rem;
-  font-weight:600;
-  cursor:pointer;
-  box-shadow:var(--shadow);
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  gap:.25rem;
-  transition:background .25s,transform .25s,box-shadow .25s,color .25s,border-color .25s;
-}
-.btn:hover{
-  background:linear-gradient(to right,#000000,#1e1e1e);
-  border-color:var(--accent);
-  color:var(--accent);
-  transform:translateY(-1px);
-}
-
-/* ===== COLUMNS ===== */
-#columns{
-  display:grid;
-  grid-template-columns:minmax(0,1fr);
-  gap:1rem;
-  width:100%;
-  max-width:900px;
-  margin:0 auto;
-}
-.column{
-  width:100%;
-  background:var(--card);
-  border-radius:var(--radius);
-  border:1px solid var(--line);
-  padding:.9rem .9rem .75rem;
-  text-align:left;
-  box-shadow:var(--shadow);
-  color:#f5f5f5;
-}
-.column h3{
-  margin:0 0 .6rem;
-  font-size:.95rem;
-  color:var(--accent);
-  border-bottom:1px solid var(--line);
-  padding-bottom:.35rem;
-}
-
-/* Word tags */
-.word{
-  margin:.2rem .25rem .2rem 0;
-  padding:.25rem .6rem;
-  border-radius:999px;
-  display:inline-block;
-  font-weight:600;
-  font-size:.85rem;
-  background:#444;
-  color:#f5f5f5;
-}
-
-/* Colour tints per sound (slight, but still dark-theme) */
-.word.ju{background:rgba(37,99,235,0.45);}
-.word.oo{background:rgba(15,23,42,0.6);}
-.word.uh{background:rgba(15,118,110,0.55);}
-.word.er{background:rgba(59,130,246,0.55);}
-
-/* ===== FOOTER (brand) ===== */
-footer{
-  text-align:center;
-  background:var(--card);
-  color:#f5f5f5;
-  font-size:.85rem;
-  padding:.9rem;
-  border-top:1px solid var(--line);
-}
-
-/* ===== Larger screens ===== */
-@media (min-width:700px){
-
-  main{
-    padding:1.75rem 1.5rem 2.5rem;
-  }
-
-  #game-zone{
-    max-width:580px;
-    aspect-ratio:1 / 1;
-    margin-top:1.75rem;
-  }
-
-  #central{
-    width:180px;
-    height:180px;
-    font-size:1.15rem;
-  }
-
-  .sound-btn{
-    width:150px;
-    height:150px;
-    font-size:1rem;
-  }
-
-  #btn-ju{top:2%;left:50%;transform:translate(-50%,-5%);}
-  #btn-oo{top:50%;right:0;transform:translate(15%,-50%);}
-  #btn-uh{bottom:0;left:50%;transform:translate(-50%,10%);}
-  #btn-er{top:50%;left:0;transform:translate(-15%,-50%);}
-
-  #columns{
-    grid-template-columns:repeat(4,minmax(0,1fr));
-  }
-}
-  /* =========================
-   Cross-device hardening
-   (iPhone / Android / tablets / desktop)
-   ========================= */
-
-/* Prevent tiny horizontal scroll on iOS caused by transforms/absolute elements */
-html, body { overflow-x: hidden; }
-
-/* iPhone notch / safe area padding */
-body{
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-
-/* Images/videos never overflow */
-video, canvas, img { max-width: 100%; height: auto; }
-
-/* Avoid hover “sticking” on touch devices */
-@media (hover: none){
-  #central:hover,
-  .sound-btn:hover,
-  button:hover,
-  .btn:hover{
-    transform:none;
-    background:inherit;
-    color:inherit;
-    border-color:inherit;
-    box-shadow: var(--shadow);
-  }
-}
-
-/* iOS tap highlight removal (the grey/purple flash) */
-a, button, #central, .sound-btn{
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* If you ever get odd “selection highlight” blocks on iOS */
-#central, .sound-btn, button, .btn{
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-/* Make the game-zone never exceed viewport width, even with transforms */
-#game-zone{ max-width: min(580px, 92vw); }
-
-/* Keep the side buttons inside the screen on small phones */
-@media (max-width: 420px){
-  #btn-oo{ right: 2%; transform: translate(0,-50%); }
-  #btn-er{ left: 2%;  transform: translate(0,-50%); }
-  #btn-ju{ top: 2%;   transform: translate(-50%,0); }
-  #btn-uh{ bottom: 2%; transform: translate(-50%,0); }
-}
-
-/* Respect “reduce motion” accessibility */
-@media (prefers-reduced-motion: reduce){
-  *{ animation: none !important; transition: none !important; }
-}
-.sound-btn.pulsing{
-  outline: 3px solid rgba(255,122,26,0.35);
-  outline-offset: 4px;
-}
-
-</style>
+    @media (prefers-reduced-motion: reduce){
+      * { transition:none !important; scroll-behavior:auto !important; }
+    }
+  </style>
 </head>
 
 <body>
+  <header>
+    <!-- Sticky QR generator (top-left) -->
+    <div class="qr-wrap">
+      <button type="button" class="qr-btn" id="qrToggle" aria-expanded="false" aria-controls="qrPanel">
+        QR
+      </button>
 
-<header>
-  MODERN ENGLISH AUSTRALIA
-  <span>"U" ONE LETTER – FOUR SOUNDS</span>
-</header>
-
-<main>
-  <p class="lesson-link">
-    📘 <a href="u3.html" target="_blank">Click for a Micro Lesson Review</a>
-  </p>
-
-  <div class="instructions">
-    <h2>The four sounds of U</h2>
-    <p>Click on the buttons below to hear the sound and see it spoken. Then play this game.</p>
-  </div>
-
-  <!-- === GAME ZONE === -->
-  <div id="game-zone">
-    <div id="central">▶ Start</div>
-
-    <div id="btn-ju" class="sound-btn" data-sound="ju">
-      <span>/juː/ <br>You, United</span>
-      <video id="hint-ju" class="hint-video" src="yousound.mp4" playsinline muted></video>
+      <div class="qr-panel" id="qrPanel" role="dialog" aria-label="QR code" aria-hidden="true">
+        <p class="qr-title">Scan to open this page</p>
+        <div id="qrcode"></div>
+      </div>
     </div>
 
-    <div id="btn-oo" class="sound-btn" data-sound="oo">
-      <span>/uː/ <br>oo – oops</span>
-      <video id="hint-oo" class="hint-video" src="oops.mp4" playsinline muted></video>
+    MODERN ENGLISH AUSTRALIA
+    <span>4 Sounds of U</span>
+  </header>
+
+  <main>
+    <section class="instructions">
+      <h2>HINT — The 4 Sounds of U</h2>
+      <p><strong>Lesson:</strong> Listening and speaking are connected. To make the sound you need to notice how your mouth, lips, tongue, and jaw move. Click the short videos below to hear each sound clearly.</p>
+
+      <div class="vowel-block">
+        <h3>/juː/ — “you” sound (unit, use, university)</h3>
+        <video src="yousound.mp4" class="vowel-video" playsinline preload="metadata"></video>
+        <p class="vowel-desc">Round your lips slightly, raise your tongue high and forward, and glide smoothly into the long /juː/. This is a long voiced sound: start as “juː” and finish as “uː”.</p>
+      </div>
+
+      <div class="vowel-block">
+        <h3>/uː/ — long “oo” sound (oops, uber, ooze)</h3>
+        <video src="oops.mp4" class="vowel-video" playsinline preload="metadata"></video>
+        <p class="vowel-desc">Lips rounded, tongue high and back, voiced.</p>
+      </div>
+
+      <div class="vowel-block">
+        <h3>/ʌ/ — “uh” sound (uncle, under, update)</h3>
+        <video src="ahsound.mp4" class="vowel-video" playsinline preload="metadata"></video>
+        <p class="vowel-desc">Relaxed tongue, neutral lips, natural short sound.</p>
+      </div>
+
+      <div class="vowel-block">
+        <h3>/ɜː/ — “er” sound (urgent, urban, early)</h3>
+        <video src="ursound.mp4" class="vowel-video" playsinline preload="metadata"></video>
+        <p class="vowel-desc">Tongue mid-central, slight lip rounding, long controlled vowel.</p>
+      </div>
+    </section>
+
+    <div class="links">
+      <a href="U3.html" class="btn"> Matching Game</a>
+      <a href="U2.html" class="btn">Challenge Quiz</a>
     </div>
+  </main>
 
-    <div id="btn-uh" class="sound-btn" data-sound="uh">
-      <span>/ʌ/ <br>under, umbrella</span>
-      <video id="hint-uh" class="hint-video" src="ahsound.mp4" playsinline muted></video>
-    </div>
+  <footer>
+    © Koala Spies Sydney · Modern English Australia · All Rights Reserved
+  </footer>
 
-    <div id="btn-er" class="sound-btn" data-sound="er">
-      <span>/ɜː/ <br>ur – urgent</span>
-      <video id="hint-er" class="hint-video" src="uhsound.mp4" playsinline muted></video>
-    </div>
-  </div>
+  <!-- QRCode.js (client-side) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-  <div id="feedback"></div>
+  <script>
+    /* =============================
+       CLICK-TO-PLAY WITH AUDIO
+       - Stops other videos
+       - First tap: play from start with sound
+       - Second tap: pause
+       ============================= */
 
-  <p>Review the words in the columns below, then go to further practice or play again.</p>
+    const videos = Array.from(document.querySelectorAll(".vowel-video"));
+    let current = null;
 
-  <!-- Columns -->
-  <div id="columns">
-    <div class="column" id="col-ju">
-      <h3>/juː/ – “you”</h3>
-      <div class="list"></div>
-    </div>
-    <div class="column" id="col-oo">
-      <h3>/uː/ – “oo”</h3>
-      <div class="list"></div>
-    </div>
-    <div class="column" id="col-uh">
-      <h3>/ʌ/ – “uh”</h3>
-      <div class="list"></div>
-    </div>
-    <div class="column" id="col-er">
-      <h3>/ɜː/ – “er”</h3>
-      <div class="list"></div>
-    </div>
-  </div>
+    videos.forEach(video => {
+      video.autoplay = false;
+      video.loop = false;
+      video.muted = true;
 
-  <!-- Navigation -->
-  <div id="controls">
-    <button id="reset"> Play Again</button>
-    <a href="u3.html" class="btn"> LESSON</a>
-    <a href="U2.html" class="btn">Test</a>
-  </div>
+      video.addEventListener("click", async () => {
+        if (current && current !== video) {
+          current.pause();
+          current.currentTime = 0;
+          current.muted = true;
+          current = null;
+        }
 
-</main>
+        if (!video.paused) {
+          video.pause();
+          return;
+        }
 
-<footer>© Koala Spies Sydney · Modern English Australia · All Rights Reserved</footer>
+        try {
+          video.currentTime = 0;
+          video.muted = false;
+          await video.play();
+          current = video;
+        } catch (err) {
+          console.log("Video play error:", err);
+        }
 
-<script>
-const words=[
-  {text:"unit",sound:"ju"},
-  {text:"uber",sound:"oo"},
-  {text:"uncle",sound:"uh"},
-  {text:"urban",sound:"er"},
-  {text:"utopia",sound:"ju"},
-  {text:"uptown",sound:"uh"},
-  {text:"upgrade",sound:"uh"},
-  {text:"Uzbekistan",sound:"oo"},
-  {text:"Europe",sound:"ju"},
-  {text:"union",sound:"ju"},
-  {text:"urge",sound:"er"},
-  {text:"Ukraine",sound:"ju"},
-  {text:"unbelievable",sound:"uh"},
-  {text:"uniform",sound:"ju"},
-  {text:"uppercase",sound:"uh"},
-  {text:"ultimate",sound:"uh"},
-  {text:"uranium",sound:"ju"},
-  {text:"user",sound:"ju"},
-  {text:"utility",sound:"ju"},
-  {text:"uncle",sound:"uh"},
-  {text:"oolong tea",sound:"oo"},
-  {text:"Uganda",sound:"ju"},
-  {text:"Eurovision",sound:"ju"},
-  {text:"usurp",sound:"ju"},
-  {text:"urban",sound:"er"},
-  {text:"unique",sound:"ju"},
-  {text:"ooze",sound:"oo"},
-  {text:"universal",sound:"ju"},
-  {text:"unsuitable",sound:"uh"}
-];
+        video.onended = () => {
+          video.pause();
+          video.currentTime = 0;
+          video.muted = true;
+          if (current === video) current = null;
+        };
+      });
+    });
 
-let remaining=[...words];
-let current=null;
-let selected=false;
+    /* =============================
+       STICKY QR GENERATOR
+       - Toggles panel
+       - Generates QR once (current page URL)
+       ============================= */
 
-const central=document.getElementById("central");
-const feedback=document.getElementById("feedback");
-const soundBtns=document.querySelectorAll(".sound-btn");
+    const qrToggle = document.getElementById("qrToggle");
+    const qrPanel  = document.getElementById("qrPanel");
+    const qrTarget = document.getElementById("qrcode");
+    let qrMade = false;
 
-/* Play word audio */
-function playWordAudio(word){
-  const a=new Audio(`audio/${word.text}.mp3`);
-  a.play().catch(()=>{
-    const msg=new SpeechSynthesisUtterance(word.text);
-    msg.lang="en-US";
-    speechSynthesis.speak(msg);
-  });
-}
+    function openQR(){
+      qrPanel.classList.add("open");
+      qrPanel.setAttribute("aria-hidden", "false");
+      qrToggle.setAttribute("aria-expanded", "true");
 
-function playButtonSound(sound, result){
-  const file=`audio/${result}-${sound}.mp3`;
-  const a=new Audio(file);
-  a.play().catch(()=>{});
-}
-
-/* Central button */
-central.addEventListener("click",()=>{
-  if(!remaining.length){
-    feedback.textContent="✅ All words sorted!";
-    feedback.style.color="var(--success)";
-    return;
-  }
-  const i=Math.floor(Math.random()*remaining.length);
-  current=remaining[i];
-  central.textContent=current.text;
-  playWordAudio(current);
-  feedback.textContent="";
-  selected=true;
-
-  soundBtns.forEach(btn=>{
-    btn.classList.add("pulsing");
-    setTimeout(()=>btn.classList.remove("pulsing"),2000);
-  });
-});
-
-/* Drag and drop */
-central.setAttribute("draggable","true");
-central.addEventListener("dragstart",e=>{
-  if(!current){e.preventDefault();return;}
-  central.classList.add("dragging");
-  e.dataTransfer.setData("text/plain",current.sound);
-});
-central.addEventListener("dragend",()=>central.classList.remove("dragging"));
-
-/* Sound button behaviour */
-soundBtns.forEach(btn=>{
-  const vid=btn.querySelector(".hint-video");
-  const label=btn.querySelector("span");
-
-  btn.addEventListener("dragover",e=>e.preventDefault());
-  btn.addEventListener("drop",e=>{
-    e.preventDefault();
-    if(!current)return;
-    handleAnswer(btn.dataset.sound,btn);
-  });
-
-  btn.addEventListener("click",()=>{
-    if(selected&&current){
-      handleAnswer(btn.dataset.sound,btn);
-      return;
+      if (!qrMade && window.QRCode) {
+        qrTarget.innerHTML = "";
+        new QRCode(qrTarget, {
+          text: window.location.href,
+          width: 140,
+          height: 140,
+          correctLevel: QRCode.CorrectLevel.M
+        });
+        qrMade = true;
+      }
     }
-    if(!current){
-      if(vid.style.display==="block")return;
-      label.style.display="none";
-      vid.style.display="block";
-      vid.currentTime=0;
-      vid.muted=false;
-      vid.play();
-      vid.onended=()=>{
-        vid.style.display="none";
-        label.style.display="block";
 
-      };
+    function closeQR(){
+      qrPanel.classList.remove("open");
+      qrPanel.setAttribute("aria-hidden", "true");
+      qrToggle.setAttribute("aria-expanded", "false");
     }
-  });
-});
 
-/* Handle answer */
-function handleAnswer(sound,btn){
-  if(sound===current.sound){
-    btn.classList.add("correct");
-    feedback.textContent="✅ Correct!";
-    feedback.style.color="var(--success)";
-    playButtonSound(sound,"correct");
+    qrToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = qrPanel.classList.contains("open");
+      if (isOpen) closeQR(); else openQR();
+    });
 
-    const div=document.createElement("div");
-    div.className="word " + sound;
-    div.textContent=current.text;
-    document.querySelector(`#col-${sound} .list`).appendChild(div);
+    // Close if you tap/click outside
+    document.addEventListener("click", (e) => {
+      if (!qrPanel.classList.contains("open")) return;
+      const clickedInside = qrPanel.contains(e.target) || qrToggle.contains(e.target);
+      if (!clickedInside) closeQR();
+    });
 
-    remaining=remaining.filter(x=>x.text!==current.text);
-    current=null;
-    selected=false;
-    central.textContent="▶ Next";
-    setTimeout(()=>btn.classList.remove("correct"),1000);
-  } else {
-    btn.classList.add("wrong");
-    feedback.textContent="❌ Try again!";
-    feedback.style.color="var(--error)";
-    playButtonSound(sound,"wrong");
-    setTimeout(()=>btn.classList.remove("wrong"),800);
-  }
-}
-
-/* Reset */
-document.getElementById("reset").addEventListener("click",()=>{
-  remaining=[...words];
-  current=null;
-  selected=false;
-  central.textContent="▶ Start";
-  feedback.textContent="";
-  document.querySelectorAll(".list").forEach(l=>l.innerHTML="");
-});
-</script>
-
+    // Close on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeQR();
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
-
 
 
 
