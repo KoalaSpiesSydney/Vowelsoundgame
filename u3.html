@@ -1,237 +1,639 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sound Sorting Game – Modern English Australia</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Sound Sorting – The Four “U” Sounds | Modern English Australia</title>
 
-<style>
-:root {
-  --bg:#f2f5f6;
-  --card:#1e1f21;
-  --accent:#009688;
-  --accent-light:#33bba6;
-  --ink:#1c1e20;
-  --ink-light:#f5f5f5;
-  --success:#20c997;
-  --error:#e74c3c;
-  --shadow:0 6px 24px rgba(0,0,0,.25);
-  --radius:14px;
-  --line:#3a3a3a;
-  --muted:#bbbbbb;
-}
+  <style>
 
-/* ===== Base ===== */
-body {
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--ink);
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-}
+        :root {
+      --bg:#f2f5f6;
+      --card:#1e1f21;
+      --accent:#009688;
+      --accent-light:#33bba6;
+      --ink:#1c1e20;
+      --ink-light:#f5f5f5;
+      --muted:#6b737a;
+      --line:rgba(0,0,0,.12);
+      --success:#20c997;
+      --error:#e74c3c;
+      --shadow:0 6px 24px rgba(0,0,0,.25);
+      --radius:14px;
+    }
+    :root{
+   
+      --shadow:0 6px 24px rgba(0,0,0,0.25);
+      --radius:14px;
 
-/* ===== Header ===== */
-header {
-  background:var(--card);
-  color:var(--accent);
-  text-align:center;
-  padding:1.2rem 0;
-  font-size:1.5rem;
-  font-weight:bold;
-  letter-spacing:2px;
-  border-bottom:1px solid var(--line);
-}
-header span {
-  color:#f5f5f5;
-  font-weight:300;
-  display:block;
-  font-size:1rem;
-  letter-spacing:3px;
-}
+      --ju-color:#2563eb;
+      --oo-color:#e11a0b;
+      --uh-color:#0f766e;
+      --er-color:#cfe607;
 
-/* ===== Main Layout ===== */
-main {
-  flex:1;
-  width:100%;
-  max-width:1200px;
-  margin:0 auto;
-  padding:1rem 2rem 3rem;
-}
+      --success:var(--ok);
+      --error:var(--err);
+    }
 
-/* ===== Instructions Section ===== */
-.instructions {
-  margin:1.5rem auto;
-  max-width:900px;
-  line-height:1.6;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:1.5rem 2rem;
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
-.instructions h2 {
-  color:var(--accent);
-  text-align:center;
-  margin-top:0;
-}
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ height:100%; }
 
-/* ===== Video Blocks ===== */
-.vowel-block {
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:12px;
-  box-shadow:0 4px 16px rgba(0,0,0,0.1);
-  padding:1rem;
-  margin:1rem 0;
-}
-.vowel-block h3 {
-  margin-top:0;
-  color:var(--accent);
-}
+    body{
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      line-height:1.75;
+      -webkit-text-size-adjust:100%;
+      text-rendering:optimizeLegibility;
+    }
 
-.vowel-video {
-  display:block;
-  width:100%;
-  max-width:260px;
-  aspect-ratio:16/9;
-  margin:0.6rem auto 0;
-  border-radius:10px;
-  cursor:pointer;
-  background:#000;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-  transition:transform .25s ease;
-}
-.vowel-video:hover {
-  transform:scale(1.05);
-}
+    /* ===== Sticky header ===== */
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:var(--card);
+      color:var(--accent);
+      text-align:center;
+      padding:1.05rem 1rem;
+      font-size:1.35rem;
+      font-weight:800;
+      letter-spacing:2px;
+      border-bottom:1px solid var(--line);
+    }
+    header span{
+      color:#f5f5f5;
+      font-weight:300;
+      display:block;
+      font-size:0.95rem;
+      letter-spacing:3px;
+      margin-top:0.35rem;
+    }
+    @media (min-width:768px){
+      header{ font-size:1.5rem; padding:1.2rem 1rem; }
+      header span{ font-size:1rem; }
+    }
 
-.vowel-desc {
-  text-align:center;
-  color:var(--muted);
-  margin-top:0.5rem;
-  font-size:0.95rem;
-}
+    /* ===== Main ===== */
+    main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:1.25rem 1rem 2.25rem;
+      text-align:center;
+      width:100%;
+    }
 
-/* ===== Navigation Buttons ===== */
-.links {
-  display:flex;
-  justify-content:center;
-  gap:1rem;
-  margin:2.5rem 0 1rem;
-}
+    p{ margin:0 0 .75rem; }
 
-.btn {
-  background:var(--accent);
-  color:#fff;
-  padding:.75rem 1.6rem;
-  border-radius:40px;
-  font-weight:bold;
-  text-decoration:none;
-  font-size:1rem;
-  box-shadow:0 3px 10px rgba(0,0,0,0.2);
-  transition:all .25s ease;
-}
-.btn:hover {
-  background:var(--accent-light);
-  transform:translateY(-2px);
-}
+    .lesson-link{ margin:.75rem 0 1rem; font-size:1rem; }
+    .lesson-link a{
+      color:var(--ink);
+      font-weight:700;
+      text-decoration-thickness:1px;
+      text-underline-offset:3px;
+    }
+    .lesson-link a:hover{ color:var(--accent); }
 
-/* ===== Footer ===== */
-footer {
-  margin-top:auto;
-  text-align:center;
-  background:var(--card);
-  color:var(--ink-light);
-  padding:1.2rem;
-  font-size:0.9rem;
-  border-top:1px solid var(--line);
-}
+    /* Instructions */
+    .instructions{
+      width:100%;
+      max-width:640px;
+      background:var(--card);
+      color:#f5f5f5;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:.95rem 1.15rem 1.15rem;
+      margin-bottom:1rem;
+      text-align:center;
+    }
+    .instructions h2{
+      margin:0 0 .4rem;
+      font-size:1.1rem;
+      color:var(--accent);
+    }
+    .instructions p{ margin-bottom:.4rem; }
 
-</style>
+    /* ===== Game Zone ===== */
+    #game-zone{
+      position:relative;
+      width:100%;
+      max-width:420px;
+      aspect-ratio:1 / 1.1;
+      margin:1.25rem auto 1.25rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      touch-action:manipulation;
+    }
+
+    /* Central bubble */
+    #central{
+      width:clamp(140px,48vw,190px);
+      height:clamp(140px,48vw,190px);
+      border-radius:50%;
+      background:#fff;
+      border:2px solid var(--accent);
+      color:var(--ink);
+      font-size:1.05rem;
+      font-weight:800;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      box-shadow:var(--shadow);
+      padding:.55rem;
+      text-align:center;
+      line-height:1.25;
+      transition:transform .2s ease, background .2s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    /* Only hover on real hover devices */
+    @media (hover:hover) and (pointer:fine){
+      #central:hover{ transform:scale(1.03); background:#ffe4c2; }
+    }
+
+    /* Sound circles */
+    .sound-btn{
+      position:absolute;
+      width:clamp(110px,32vw,140px);
+      height:clamp(110px,32vw,140px);
+      border-radius:50%;
+      background:#ffffff;
+      border:2px solid var(--accent);
+      color:var(--ink);
+      font-weight:750;
+      font-size:.9rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+      padding:.6rem;
+      text-align:center;
+      transition:transform .2s ease, background .2s ease, border-color .2s ease;
+      overflow:hidden;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+    }
+
+    /* Positions tuned for phones */
+    #btn-ju{top:4%;left:50%;transform:translate(-50%,0);}
+    #btn-oo{top:50%;right:0;transform:translate(10%,-50%);}
+    #btn-uh{bottom:0;left:50%;transform:translate(-50%,-10%);}
+    #btn-er{top:50%;left:0;transform:translate(-10%,-50%);}
+
+    #btn-ju{border-color:var(--ju-color);}
+    #btn-oo{border-color:var(--oo-color);}
+    #btn-uh{border-color:var(--uh-color);}
+    #btn-er{border-color:var(--er-color);}
+
+    #btn-ju span{color:var(--ju-color);}
+    #btn-oo span{color:var(--oo-color);}
+    #btn-uh span{color:var(--uh-color);}
+    #btn-er span{color:var(--er-color);}
+
+    @media (hover:hover) and (pointer:fine){
+      .sound-btn:hover{ transform:scale(1.03); background:#f5f5f5; }
+    }
+
+    /* Feedback */
+    #feedback{
+      font-weight:800;
+      min-height:1.6rem;
+      margin:.4rem 0 1rem;
+    }
+
+    /* Correct / wrong */
+    .sound-btn.correct{ background:#e6f9ee; border-color:var(--ok); }
+    .sound-btn.wrong{ background:#fde2e2; border-color:var(--err); }
+
+    /* Hint video inside button */
+    .hint-video{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:50%;
+      display:none;
+    }
+
+    /* Focus (keyboard/tablet) */
+    .sound-btn:focus-visible,
+    button:focus-visible,
+    .btn:focus-visible,
+    .lesson-link a:focus-visible{
+      outline:none;
+      box-shadow:0 0 0 3px rgba(255,122,26,.25), var(--shadow);
+    }
+
+    /* Controls */
+    #controls{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:.75rem;
+      margin:1rem 0 1.5rem;
+    }
+
+    button{
+      background:#ffffff;
+      color: #009688;;
+      border:1px solid var(--ink);
+      padding:.6rem 1.25rem;
+      border-radius:999px;
+      font-size:.95rem;
+      font-weight:750;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+      display:inline-flex;
+      align-items:center;
+      gap:.25rem;
+      transition:transform .18s ease, background .18s ease;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+    }
+    @media (hover:hover) and (pointer:fine){
+      button:hover{ background:#e5e7eb; transform:translateY(-1px); }
+    }
+
+    .btn{
+      background:#009688;;
+      color:#f5f5f5;
+      border:1px solid #009688;
+      padding:.6rem 1.25rem;
+      border-radius:10px;
+      font-size:.95rem;
+      font-weight:750;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:.25rem;
+      transition:transform .18s ease, color .18s ease, border-color .18s ease;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+    }
+    @media (hover:hover) and (pointer:fine){
+      .btn:hover{
+        border-color:var(--accent);
+        color:var(--accent);
+        transform:translateY(-1px);
+      }
+    }
+
+    /* Columns */
+    #columns{
+      display:grid;
+      grid-template-columns:minmax(0,1fr);
+      gap:1rem;
+      width:100%;
+      max-width:980px;
+      margin:0 auto;
+    }
+    .column{
+      width:100%;
+      background:white;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      padding:.9rem .9rem .75rem;
+      text-align:left;
+      box-shadow:var(--shadow);
+      color:white;
+      min-width:0;
+    }
+    .column h3{
+      margin:0 0 .6rem;
+      font-size:.95rem;
+      color:var(--accent);
+      border-bottom:1px solid var(--line);
+      padding-bottom:.35rem;
+    }
+
+    .word{
+      margin:.25rem .35rem .25rem 0;
+      padding:.25rem .6rem;
+      border-radius:999px;
+      display:inline-block;
+      font-weight:750;
+      font-size:.85rem;
+      background:#444;
+      color:#f5f5f5;
+      white-space:nowrap;
+    }
+    .word.ju{background:rgba(37,99,235,0.45);}
+    .word.oo{background:rgba(15,23,42,0.6);}
+    .word.uh{background:rgba(15,118,110,0.55);}
+    .word.er{background:rgba(59,130,246,0.55);}
+
+    footer{
+      text-align:center;
+      background:var(--card);
+      color:#f5f5f5;
+      font-size:.85rem;
+      padding:.9rem 1rem;
+      border-top:1px solid var(--line);
+    }
+
+    /* Larger screens */
+    @media (min-width:700px){
+      main{ padding:1.75rem 1.5rem 2.5rem; }
+      #game-zone{ max-width:580px; aspect-ratio:1 / 1; margin-top:1.75rem; }
+      #central{ width:180px; height:180px; font-size:1.12rem; }
+      .sound-btn{ width:150px; height:150px; font-size:1rem; }
+      #btn-ju{top:2%;left:50%;transform:translate(-50%,-5%);}
+      #btn-oo{top:50%;right:0;transform:translate(15%,-50%);}
+      #btn-uh{bottom:0;left:50%;transform:translate(-50%,10%);}
+      #btn-er{top:50%;left:0;transform:translate(-15%,-50%);}
+
+      #columns{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; scroll-behavior:auto !important; }
+    }
+  </style>
 </head>
 
 <body>
+  <header>
+    MODERN ENGLISH AUSTRALIA
+    <span>"U" ONE LETTER – FOUR SOUNDS</span>
+  </header>
 
-<header>
-  MODERN ENGLISH AUSTRALIA
-  <span>4 Sounds of U</span>
-</header>
+  <main>
+    <p class="lesson-link">
+      📘 <a href="u3.html" target="_blank" rel="noopener">Click for a Micro Lesson Review</a>
+    </p>
 
-<main>
+    <div class="instructions">
+      <h2>The four sounds of U</h2>
+      <p>Click on the buttons below to hear the sound and see it spoken. Then play this game.</p>
+    </div>
 
-<!-- ===== PART 1: VIDEO HINTS ===== -->
-<section class="instructions">
-  <h2>HINT — The 4 Sounds of U</h2>
-  <p><strong>Lesson:</strong> Listening and speaking are connected. To make the sound you need to notice how your mouth, lips, tongue, and jaw move. Click the short videos below to hear each sound clearly.</p>
+    <div id="game-zone" aria-label="Sound sorting game">
+      <button id="central" type="button" draggable="true" aria-label="Start or next word">▶ Start</button>
 
-  <!-- /juː/ -->
-  <div class="vowel-block">
-    <h3>/juː/ — “you” sound (unit, use, university)</h3>
-    <video src="yousound.mp4" class="vowel-video" playsinline></video>
-    <p class="vowel-desc">Round your lips slightly, raise your tongue high and forward, and glide smoothly into the long /juː/ This is a long voiced sound starting as a Ju: and finish as a u:"</p>
-  </div>
+      <button id="btn-ju" class="sound-btn" type="button" data-sound="ju" aria-label="Choose /juː/ sound">
+        <span>/juː/<br>You, United</span>
+        <video id="hint-ju" class="hint-video" src="yousound.mp4" playsinline muted preload="metadata"></video>
+      </button>
 
-  <!-- /uː/ -->
-  <div class="vowel-block">
-    <h3>/uː/ — long “oo” sound (oops, uber, ooze)</h3>
-    <video src="oops.mp4" class="vowel-video" playsinline></video>
-    <p class="vowel-desc">Lips rounded, tongue high and back, voiced.</p>
-  </div>
+      <button id="btn-oo" class="sound-btn" type="button" data-sound="oo" aria-label="Choose /uː/ sound">
+        <span>/uː/<br>oo – oops</span>
+        <video id="hint-oo" class="hint-video" src="oops.mp4" playsinline muted preload="metadata"></video>
+      </button>
 
-  <!-- /ʌ/ -->
-  <div class="vowel-block">
-    <h3>/ʌ/ — “uh” sound (uncle, under, update)</h3>
-    <video src="ahsound.mp4" class="vowel-video" playsinline></video>
-    <p class="vowel-desc">Relaxed tongue, neutral lips, natural short sound.</p>
-  </div>
+      <button id="btn-uh" class="sound-btn" type="button" data-sound="uh" aria-label="Choose /ʌ/ sound">
+        <span>/ʌ/<br>under, umbrella</span>
+        <video id="hint-uh" class="hint-video" src="ahsound.mp4" playsinline muted preload="metadata"></video>
+      </button>
 
-  <!-- /ɜː/ -->
-  <div class="vowel-block">
-    <h3>/ɜː/ — “er” sound (urgent, urban, early)</h3>
-    <video src="ursound.mp4" class="vowel-video" playsinline></video>
-    <p class="vowel-desc">Tongue mid-central, slight lip rounding, long controlled vowel.</p>
-  </div>
-</section>
+      <button id="btn-er" class="sound-btn" type="button" data-sound="er" aria-label="Choose /ɜː/ sound">
+        <span>/ɜː/<br>ur – urgent</span>
+        <!-- your original used uhsound.mp4 here; kept as-is -->
+        <video id="hint-er" class="hint-video" src="uhsound.mp4" playsinline muted preload="metadata"></video>
+      </button>
+    </div>
 
-<!-- ===== Navigation Buttons ===== -->
-<div class="links">
-  <a href="index.html" class="btn">GAME</a>
-    <a href="U2.html" class="btn">TEST</a>
-  <a href="https://ieltspteaustralianexaminertutor.com/" class="btn"> Home</a>
-</div>
+    <div id="feedback" aria-live="polite"></div>
 
-</main>
+    <p>Review the words in the columns below, then go to further practice or play again.</p>
 
-<footer>
-  © Koala Spies Sydney · Modern English Australia · All Rights Reserved
-</footer>
+    <div id="columns">
+      <div class="column" id="col-ju">
+        <h3>/juː/ – “you”</h3>
+        <div class="list"></div>
+      </div>
+      <div class="column" id="col-oo">
+        <h3>/uː/ – “oo”</h3>
+        <div class="list"></div>
+      </div>
+      <div class="column" id="col-uh">
+        <h3>/ʌ/ – “uh”</h3>
+        <div class="list"></div>
+      </div>
+      <div class="column" id="col-er">
+        <h3>/ɜː/ – “er”</h3>
+        <div class="list"></div>
+      </div>
+    </div>
 
-<script>
-/* =============================
-   ENABLE VIDEO PLAY WITH AUDIO
-   ============================= */
+    <div id="controls">
+      <button id="reset" type="button">Play Again</button>
+      <a href="index.html" class="btn">Explanation</a>
+      <a href="U2.html" class="btn">Challenge Quiz</a>
+    </div>
+  </main>
 
-document.querySelectorAll(".vowel-video").forEach(video => {
-  video.addEventListener("click", () => {
+  <footer>© Koala Spies Sydney · Modern English Australia · All Rights Reserved</footer>
 
-    /* If video is muted or paused — restart WITH AUDIO */
-    if (video.muted || video.paused) {
-      video.muted = false;
-      video.currentTime = 0;
-      video.play();
-      return;
+  <script>
+    const words = [
+      {text:"unit",sound:"ju"},
+      {text:"uber",sound:"oo"},
+      {text:"uncle",sound:"uh"},
+      {text:"urban",sound:"er"},
+      {text:"utopia",sound:"ju"},
+      {text:"uptown",sound:"uh"},
+      {text:"upgrade",sound:"uh"},
+      {text:"Uzbekistan",sound:"oo"},
+      {text:"Europe",sound:"ju"},
+      {text:"union",sound:"ju"},
+      {text:"urge",sound:"er"},
+      {text:"Ukraine",sound:"ju"},
+      {text:"unbelievable",sound:"uh"},
+      {text:"uniform",sound:"ju"},
+      {text:"uppercase",sound:"uh"},
+      {text:"ultimate",sound:"uh"},
+      {text:"uranium",sound:"ju"},
+      {text:"user",sound:"ju"},
+      {text:"utility",sound:"ju"},
+      {text:"uncle",sound:"uh"},
+      {text:"oolong tea",sound:"oo"},
+      {text:"Uganda",sound:"ju"},
+      {text:"Eurovision",sound:"ju"},
+      {text:"usurp",sound:"ju"},
+      {text:"urban",sound:"er"},
+      {text:"unique",sound:"ju"},
+      {text:"ooze",sound:"oo"},
+      {text:"universal",sound:"ju"},
+      {text:"unsuitable",sound:"uh"}
+    ];
+
+    let remaining = [...words];
+    let current = null;
+    let selected = false;
+
+    const central = document.getElementById("central");
+    const feedback = document.getElementById("feedback");
+    const soundBtns = Array.from(document.querySelectorAll(".sound-btn"));
+
+    /* Play word audio (falls back to TTS if file missing) */
+    function playWordAudio(word){
+      const file = `audio/${encodeURIComponent(word.text)}.mp3`;
+      const a = new Audio(file);
+      a.play().catch(() => {
+        const msg = new SpeechSynthesisUtterance(word.text);
+        msg.lang = "en-US";
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(msg);
+      });
     }
 
-    /* If playing with audio — pause on second tap */
-    if (!video.paused) {
-      video.pause();
+    function playButtonSound(sound, result){
+      const a = new Audio(`audio/${result}-${sound}.mp3`);
+      a.play().catch(()=>{});
     }
-  });
-});
-</script>
 
+    function setFeedback(text, ok){
+      feedback.textContent = text;
+      feedback.style.color = ok ? "var(--success)" : "var(--error)";
+    }
+
+    /* Central: pick next word */
+    central.addEventListener("click", () => {
+      if (!remaining.length) {
+        feedback.textContent = "All words sorted!";
+        feedback.style.color = "var(--success)";
+        return;
+      }
+      const i = Math.floor(Math.random() * remaining.length);
+      current = remaining[i];
+      central.textContent = current.text;
+      playWordAudio(current);
+      feedback.textContent = "";
+      selected = true;
+    });
+
+    /* Drag + Drop (desktop/tablet with pointer support) */
+    central.addEventListener("dragstart", (e) => {
+      if (!current) { e.preventDefault(); return; }
+      e.dataTransfer.setData("text/plain", current.sound);
+    });
+
+    soundBtns.forEach(btn => {
+      btn.addEventListener("dragover", (e) => e.preventDefault());
+      btn.addEventListener("drop", (e) => {
+        e.preventDefault();
+        if (!current) return;
+        handleAnswer(btn.dataset.sound, btn);
+      });
+    });
+
+    /* Click behaviour:
+       - If a word is active: click chooses an answer
+       - If no word active: click plays hint video (with sound) inside that button
+    */
+    soundBtns.forEach(btn => {
+      const vid = btn.querySelector(".hint-video");
+      const label = btn.querySelector("span");
+
+      btn.addEventListener("click", async () => {
+        if (selected && current) {
+          handleAnswer(btn.dataset.sound, btn);
+          return;
+        }
+
+        if (!current && vid) {
+          // Stop other hint videos
+          soundBtns.forEach(b => {
+            const v = b.querySelector(".hint-video");
+            const s = b.querySelector("span");
+            if (v && v !== vid) {
+              v.pause();
+              v.currentTime = 0;
+              v.muted = true;
+              v.style.display = "none";
+              if (s) s.style.display = "";
+            }
+          });
+
+          // Toggle this hint
+          const open = vid.style.display === "block";
+          if (open) return;
+
+          if (label) label.style.display = "none";
+          vid.style.display = "block";
+          vid.currentTime = 0;
+          vid.muted = false;
+
+          try { await vid.play(); } catch (err) { console.log("Hint video error:", err); }
+
+          vid.onended = () => {
+            vid.pause();
+            vid.currentTime = 0;
+            vid.muted = true;
+            vid.style.display = "none";
+            if (label) label.style.display = "";
+          };
+        }
+      });
+    });
+
+    function handleAnswer(sound, btn){
+      if (!current) return;
+
+      if (sound === current.sound) {
+        btn.classList.add("correct");
+        setFeedback("Correct!", true);
+        playButtonSound(sound, "correct");
+
+        const tag = document.createElement("div");
+        tag.className = "word " + sound;
+        tag.textContent = current.text;
+
+        const list = document.querySelector(`#col-${sound} .list`);
+        if (list) list.appendChild(tag);
+
+        remaining = remaining.filter(x => x.text !== current.text);
+        current = null;
+        selected = false;
+        central.textContent = remaining.length ? "▶ Next" : "Done";
+
+        setTimeout(() => btn.classList.remove("correct"), 900);
+      } else {
+        btn.classList.add("wrong");
+        setFeedback("Try again!", false);
+        playButtonSound(sound, "wrong");
+        setTimeout(() => btn.classList.remove("wrong"), 650);
+      }
+    }
+
+    /* Reset */
+    document.getElementById("reset").addEventListener("click", () => {
+      remaining = [...words];
+      current = null;
+      selected = false;
+      central.textContent = "▶ Start";
+      feedback.textContent = "";
+
+      document.querySelectorAll(".list").forEach(l => l.innerHTML = "");
+
+      // Stop/hide any hint videos
+      soundBtns.forEach(b => {
+        const v = b.querySelector(".hint-video");
+        const s = b.querySelector("span");
+        if (v) {
+          v.pause();
+          v.currentTime = 0;
+          v.muted = true;
+          v.style.display = "none";
+        }
+        if (s) s.style.display = "";
+        b.classList.remove("correct","wrong");
+      });
+
+      window.speechSynthesis && window.speechSynthesis.cancel();
+    });
+  </script>
 </body>
 </html>
 
